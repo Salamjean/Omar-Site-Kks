@@ -1,0 +1,138 @@
+  /* Styles pour le conteneur principal */
+  .container1 {
+    display: flex;
+    max-width: 100%;
+    margin: 50px 50px;
+    background-color: white;
+    border-radius: 8px;
+}
+.text-section {
+    padding: 40px;
+    flex: 1;
+}
+.text-section h1 {
+    font-size: 55px;
+    margin-top: 100px;
+    color: #333;
+}
+.text-section p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 20px;
+}
+.text-section a {
+    display: inline-block;
+    padding: 5px 13px;
+    background-color: #000;
+    color: white;
+    text-decoration: none;
+}
+.image-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.image-section img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+}
+
+/* Styles pour le carrousel */
+.carousel-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin: 20px 0;
+}
+.product-carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px;
+}
+.product-item {
+    flex: 0 0 auto;
+    width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.image-container {
+    position: relative;
+}
+.main-image, .hover-image {
+    width: 100%;
+    height: auto;
+    transition: opacity 0.3s ease;
+}
+.hover-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+.image-container:hover .hover-image {
+    opacity: 1;
+}
+.quick-view {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.product-details {
+    padding: 10px;
+    text-align: center;
+}
+.product-name {
+    font-size: 16px;
+    margin: 5px 0;
+}
+.product-price {
+    font-size: 14px;
+    color: #333;
+}
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+}
+.nav-arrow.left {
+    left: 10px;
+}
+.nav-arrow.right {
+    right: 10px;
+}
+
+/* Styles pour la section hero */
+.hero-section {
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    margin: 3% 10%;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding-bottom: 50px;
+}
+.hero-section p {
+    font-size: 40px;
+    margin: 0;
+}
