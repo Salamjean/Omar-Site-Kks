@@ -1,12 +1,15 @@
 @extends('user.layouts.templates')
 @section('content')
 <link rel="stylesheet" href="{{ asset('assetsUsers/styles.css') }}">
+<style>
+    
+</style>
 @php
     $backgroundImage = App\Models\BackgroundImage::latest()->first();
 @endphp
 
 <!-- Section de couverture -->
-<div class="site-blocks-cover" style="background-image: url({{ $backgroundImage ? asset('storage/' . $backgroundImage->image_path) : asset('assets/images/mode.avif') }});" data-aos="fade">
+<div class="site-blocks-cover " style="background-image: url({{ $backgroundImage ? asset('storage/' . $backgroundImage->image_path) : asset('assets/images/mode.avif') }});" data-aos="fade">
     <div class="container h-100">
         <div class="row align-items-center justify-content-end h-100">
             <div class="col-md-6 text-right pt-5 pt-md-0">
@@ -14,7 +17,7 @@
                     NOUVEAU <br> ARRIVÉES
                 </p>
                 <div class="intro-text text-right">
-                    <p>
+                    <p class="voir">
                         <a href="{{ route('user.new') }}" class="btn btn-sm animated-button">Voir les nouveaux arrivées</a>
                     </p>
                 </div>
@@ -125,9 +128,9 @@
     </div>
 
 <!-- Footer -->
-<footer class="bg-black py-5" style="background-color: black">
-    <div class="container">
-        <div class="row">
+<footer class="bg-black py-5 col-12" style="background-color: black">
+    <div class="container col-12">
+        <div class="row col-12">
             <!-- SUPPORT Section -->
             <div class="col-md-3">
                 <h5 style="font-weight: bold; font-size:25px">Directrice générale</h5>
