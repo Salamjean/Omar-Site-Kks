@@ -28,7 +28,7 @@ class UserController extends Controller
         $articlesAccessoire = Article::where('categorie', 'Accessoire')
                                 ->orderBy('created_at', 'desc')
                                 ->get();
-        return view('pages.accueil',compact('articles','latestArticle','latestChaussure','articlesAccessoire'));
+        return view('pages.pages.accueil',compact('articles','latestArticle','latestChaussure','articlesAccessoire'));
     }
     public function space(){
         $user = Auth::user();
