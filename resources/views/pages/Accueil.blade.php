@@ -27,7 +27,7 @@
 <!-- Section hero -->
 <div class="hero-section" 
      style="background-image: url('{{ $latestArticle ? asset('storage/' . $latestArticle->main_image) : asset('assets/images/mode.avif') }}');">
-    <p style="font-size: 40px; margin: 0;">Vêtements cooolllloolll</p>
+    <p style="font-size: 40px; margin: 0;">Vêtements</p>
     <p>
         <a href="{{ route('user.space') }}" class="btn btn-sm animated-button1">Voir plus de vêtements</a>
     </p>
