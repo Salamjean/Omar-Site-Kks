@@ -46,7 +46,7 @@ class AdminController extends Controller
             'email' => 'required|exists:admins',
             'password' => 'required|min:8'
         ],[
-            'email.exists' => 'Cet email n\'existe pas',
+            'email.exists' => 'Cet email n\'existe pas donne autre',
             'email.required' => 'L\'email est obligatoire',
             'password.required' => 'Le mot de passe est obligatoire',
             'password.min' => 'Le mot de passe doit contenir au moins 8 caractères'
