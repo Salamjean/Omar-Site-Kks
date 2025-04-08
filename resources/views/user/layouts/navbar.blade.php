@@ -6,15 +6,27 @@
       <div class="row align-items-center">
 
 
-        <!-- Barre de recherche - cachée sur mobile et tablette -->
-        <div class="col-4 col-lg-4 order-1 order-lg-1 text-left d-none d-lg-block">
-          <form action="" class="site-block-top-search">
-            <span class="icon icon-search2"></span>
-            <input type="text" class="form-control border-0" placeholder="Search">
-          </form>
-          <hr>
-        </div>
-
+       <!-- Barre de recherche - cachée sur mobile et tablette -->
+<div class="col-4 col-lg-4 order-1 order-lg-1 text-left d-none d-lg-block">
+  <form action="{{ route('user.search') }}" method="GET" class="site-block-top-search" id="search-form-desktop">
+    <div class="input-group search-container">
+      <span class="icon icon-search2 search-icon"></span>
+      <input type="text" 
+             name="query" 
+             class="form-control search-input" 
+             placeholder="Rechercher des articles..." 
+             id="search-input-desktop"
+             aria-label="Recherche">
+      <div class="input-group-append">
+        <button type="submit" class="btn search-btn">
+          <span class="search-text">Rechercher</span>
+          <span class="icon-search2 mobile-icon"></span>
+        </button>
+      </div>
+    </div>
+  </form>
+  <hr class="search-hr">
+</div>
         <!-- Logo au centre -->
         <div class="col-8 col-lg-4 order-2 order-lg-2 text-center">
           <div>
@@ -29,7 +41,7 @@
           <div class="site-top-icons">
             <ul>
               <!-- Icônes cachées sur mobile et tablette -->
-              <li class="d-none d-lg-inline-block"><a href="#" class="search-toggle"><i class="icon-search2"></i></a></li>
+              
               <li class="d-none d-lg-inline-block"><a href="#"><i class="fa-regular fa-heart"></i></a></li>
               
               <!-- Icônes toujours visibles -->
@@ -44,7 +56,7 @@
                   <i class="fa-solid fa-user"></i>
                 </a>
                 <ul class="dropdown-menu">
-                  <li class="dropdown-header" style="text-align: center">{{ Auth::user()->name.' '.Auth::user()->prenom }}</li>
+                  <li class="dropdown-header text-center" style="text-align: center">{{ Auth::user()->name.' '.Auth::user()->prenom }}</li>
                   <li><a href="{{ route('user.logout') }}"><i class="fa-solid fa-power-off"></i> Déconnexion</a></li>
                 </ul>
               </li>
@@ -112,6 +124,43 @@
       menuToggle.addEventListener('click', function(e) {
         e.preventDefault();
         siteMenu.classList.toggle('active');
+      });
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // ... votre code existant ...
+
+    // Gestion de la recherche en temps réel (optionnel)
+    const searchInputDesktop = document.getElementById('search-input-desktop');
+    const searchInputMobile = document.getElementById('search-input-mobile');
+    const searchFormDesktop = document.getElementById('search-form-desktop');
+    const searchFormMobile = document.getElementById('search-form-mobile');
+
+    // Fonction pour effectuer la recherche
+    function performSearch(query) {
+      if (query.length > 2) { // Seulement si la requête a au moins 3 caractères
+        // Vous pouvez ici faire une requête AJAX pour des résultats en temps réel
+        // Ou simplement laisser le formulaire se soumettre normalement
+      }
+    }
+
+    // Écouteurs d'événements pour la recherche desktop
+    if (searchInputDesktop) {
+      searchInputDesktop.addEventListener('keyup', function(e) {
+        if (e.key === 'Enter') {
+          searchFormDesktop.submit();
+        }
+      });
+    }
+
+    // Écouteurs d'événements pour la recherche mobile
+    if (searchInputMobile) {
+      searchInputMobile.addEventListener('keyup', function(e) {
+        if (e.key === 'Enter') {
+          searchFormMobile.submit();
+        }
       });
     }
   });

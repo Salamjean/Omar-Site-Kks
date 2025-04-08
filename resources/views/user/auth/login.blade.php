@@ -1,6 +1,3 @@
-@extends('pages.layouts.templates')
-@section('content')
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -19,8 +16,12 @@
     <div class="wrapper" style="background-image: url('{{ asset('assets/images/mode.avif') }}');">
         <div class="inner">
             <div class="image-holder">
+                <div class="button-container">
+                    <a href="{{ route('user.accueil') }}" class="home-button">Accueil</a>
+                </div>
                 <img src="{{ asset('assets/images/registration-form-1.jpg') }}" alt="">
             </div>
+            
             <form method="POST" action="{{ route('user.handleLogin') }}">
                 @csrf
                 <h3>Se connecter</h3>
@@ -49,4 +50,3 @@
     </div>
 </body>
 </html>
-@endsection

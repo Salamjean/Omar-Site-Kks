@@ -24,6 +24,7 @@
                 <th>Quantité commandé</th>
                 <th>Total à payer</th>
                 <th>Statut</th>
+                <th>Date commande</th>
                 <th colspan="2">Actions</th>
               </tr>
             </thead>
@@ -45,6 +46,9 @@
                 <td class="quantity-cell">{{ $commande->quantity }}</td>
                 <td class="total-price-cell">{{ number_format($commande->total_price) }} Fcfa</td>
                 <td>{{ $commande->status }}</td>
+                <td class="time-elapsed" data-created-at="{{ $commande->created_at->toIso8601String() }}">
+                    <span class="minutes">0</span> min
+                </td>
                 <td>
                   <div class="btn-group" style="gap: 10px" role="group">
                     <button type="button" class="btn btn-sm btn-outline-primary btn-modifier" 
@@ -294,4 +298,24 @@
         });
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function updateElapsedTimes() {
+            document.querySelectorAll('.time-elapsed').forEach(element => {
+                const createdAt = new Date(element.getAttribute('data-created-at'));
+                const now = new Date();
+                const diffMs = now - createdAt;
+                const diffMins = Math.floor(diffMs / 60000); // Convertir en minutes
+                
+                element.querySelector('.minutes').textContent = diffMins;
+            });
+        }
+    
+        // Mettre à jour immédiatement
+        updateElapsedTimes();
+        
+        // Mettre à jour toutes les minutes (60000 ms)
+        setInterval(updateElapsedTimes, 60000);
+    });
+    </script>
 @endsection

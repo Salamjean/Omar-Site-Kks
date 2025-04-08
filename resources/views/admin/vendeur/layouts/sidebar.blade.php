@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-      <a href="{{ route('admin.dashboard') }}" class="app-brand-link">
+      <a href="{{ route('vendor.dashboard') }}" class="app-brand-link">
         <span class="app-brand-logo demo">
           <img src="{{ asset('assets/images/logoOmar.png') }}" alt="" style="width: 100px; height: 60px;" />
             <defs>
@@ -63,7 +63,7 @@
     <ul class="menu-inner py-1">
       <!-- Dashboard -->
       <li class="menu-item active">
-        <a href="{{ route('admin.dashboard') }}" class="menu-link">
+        <a href="{{ route('vendor.dashboard') }}" class="menu-link">
           <i class="menu-icon tf-icons bx bx-home-circle"></i>
           <div data-i18n="Analytics">Tableau de bord</div>
         </a>
@@ -72,7 +72,7 @@
         <span class="menu-header-text">Articles</span>
       </li>
       <li class="menu-item">
-        <a href="{{ route('background_images.index') }}" class="menu-link">
+        <a href="#" class="menu-link">
           <i  class=" menu-icon fa-solid fa-newspaper"></i>
           <div data-i18n="Basic">Articles en tendance</div>
         </a>
@@ -84,12 +84,12 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="{{ route('article.create') }}" class="menu-link">
+            <a href="#" class="menu-link">
               <div data-i18n="Basic">Ajout d'un article</div>
             </a>
           </li>
           <li class="menu-item">
-            <a href="{{ route('article.index') }}" class="menu-link">
+            <a href="#" class="menu-link">
               <div data-i18n="Basic">Listes des articles</div>
             </a>
           </li>
@@ -102,7 +102,7 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="{{ route('article.vetements') }}" class="menu-link">
+            <a href="#" class="menu-link">
               <div data-i18n="Basic">Listes des vêtements</div>
             </a>
           </li>
@@ -115,7 +115,7 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="{{ route('article.chaussures') }}" class="menu-link">
+            <a href="#" class="menu-link">
               <div data-i18n="Account">Listes des chaussures</div>
             </a>
           </li>
@@ -130,7 +130,7 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="{{ route('article.accessoires') }}" class="menu-link">
+            <a href="#" class="menu-link">
               <div data-i18n="Account">Listes des Accessoires</div>
             </a>
           </li>
@@ -149,22 +149,16 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="{{ route('vendor.create') }}" class="menu-link">
+            <a href="#" class="menu-link">
               <div data-i18n="Error">Ajout d'un personnel</div>
             </a>
           </li>
           <li class="menu-item">
-            <a href="{{ route('vendor.index') }}" class="menu-link">
+            <a href="#" class="menu-link">
               <div data-i18n="Under Maintenance">Listes des personnels</div>
             </a>
           </li>
         </ul>
-      </li>
-      <li class="menu-item">
-        <a href="{{ route('article.partanaire') }}" class="menu-link">
-          <i class="menu-icon fa-solid fa-bag-shopping"></i>
-          <div data-i18n="Basic">Partenaire Article</div>
-        </a>
       </li>
 
      
@@ -178,19 +172,19 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="{{ route('commandes.allCommandes') }}" class="menu-link">
+            <a href="#" class="menu-link">
               <div data-i18n="Error">Listes des commandes</div>
             </a>
           </li>
           <li class="menu-item">
-            <a href="{{ route('commandes.effectuee') }}" class="menu-link">
+            <a href="#" class="menu-link">
               <div data-i18n="Under Maintenance">Commandes effectuée</div>
             </a>
           </li>
         </ul>
       </li>
       <li class="menu-item">
-        <a href="{{ route('users-lists') }}" class="menu-link">
+        <a href="#" class="menu-link">
           <i class="menu-icon fa-solid fa-users"></i>
           <div data-i18n="Basic">Listes des clients</div>
         </a>

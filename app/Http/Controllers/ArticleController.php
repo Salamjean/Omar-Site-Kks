@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\ArticleFournisseur;
 use App\Models\Commande;
 use Exception;
 use Illuminate\Http\Request;
@@ -139,6 +140,7 @@ class ArticleController extends Controller
         }
     }
 
+    
     //Les functions pour les differents articles 
     public function vetements()
 {
@@ -161,4 +163,48 @@ class ArticleController extends Controller
         $articles = Article::where('categorie', 'autre')->paginate(8);
         return view('admin.articles.autre',compact('articles'));
     }
+
+    public function partanaire(){
+        $articles = ArticleFournisseur::paginate(8);
+        return view('admin.articles.fournisseur',compact('articles'));
+    }
+
+    public function deleteArticle(ArticleFournisseur $article)
+{
+    // Supprimez les images du stockage si nécessaire
+    Storage::delete([
+        'public/' . $article->main_image,
+        'public/' . $article->hover_image
+    ]);
+    
+    $article->delete();
+    
+    return redirect()->route('article.partanaire')
+        ->with('success', 'Article supprimé avec succès');
+}
+
+public function publishArticle(ArticleFournisseur $article)
+{
+    try {
+        // Créer un nouvel article dans la table articles avec les données de l'article fournisseur
+        Article::create([
+            'name' => $article->name,
+            'price' => $article->price,
+            'description' => $article->description,
+            'nombre' => $article->nombre,
+            'categorie' => $article->categorie,
+            'typeAccessoire' => $article->typeAccessoire,
+            'other' => $article->other,
+            'main_image' => $article->main_image,
+            'hover_image' => $article->hover_image,
+        ]);
+
+        // Optionnel: Supprimer l'article de la table article_fournisseurs après publication
+        // $article->delete();
+
+        return redirect()->back()->with('success', 'Article publié avec succès!');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Erreur lors de la publication de l\'article: ' . $e->getMessage());
+    }
+}
 }

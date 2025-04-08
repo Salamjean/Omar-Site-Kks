@@ -4,15 +4,28 @@
     <div class="container" style="width: 100%">
       <div class="row align-items-center">
 
-        <!-- Barre de recherche à l'extrême gauche -->
-        <div class="col-4 col-md-4 order-1 order-md-1 text-left">
-          <form action="" class="site-block-top-search">
-            <span class="icon icon-search2"></span>
-            <input type="text" class="form-control border-0" placeholder="Search">
-          </form>
-          <hr>
-        </div>
-
+       
+       <!-- Barre de recherche - cachée sur mobile et tablette -->
+<div class="col-4 col-lg-4 order-1 order-lg-1 text-left d-none d-lg-block">
+  <form action="{{ route('user.search') }}" method="GET" class="site-block-top-search" id="search-form-desktop">
+    <div class="input-group search-container">
+      <span class="icon icon-search2 search-icon"></span>
+      <input type="text" 
+             name="query" 
+             class="form-control search-input" 
+             placeholder="Rechercher des articles..." 
+             id="search-input-desktop"
+             aria-label="Recherche">
+      <div class="input-group-append">
+        <button type="submit" class="btn search-btn">
+          <span class="search-text">Rechercher</span>
+          <span class="icon-search2 mobile-icon"></span>
+        </button>
+      </div>
+    </div>
+  </form>
+  <hr class="search-hr">
+</div>
         <!-- Logo au centre -->
         <div class="col-4 col-md-4 order-2 order-md-2 text-center">
           <div>
@@ -36,7 +49,7 @@
                   <i class="fa-solid fa-user"></i>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="{{ route('login') }}"><i class="fa-solid fa-power-off"></i> Connexion</a></li>
+                  <li><a href="{{ route('login') }}"><i class="fa-solid fa-right-to-bracket"></i> Connexion</a></li>
                 </ul>
               </li>
               <li class="d-inline-block d-md-none ml-md-0"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu"></span></a></li>
@@ -51,10 +64,10 @@
     <div class="container">
       <ul class="site-menu js-clone-nav d-none d-md-block">
         <li><a href="{{ route('user.accueil') }}">Accueil</a></li>
-        <li><a href="{{ route('user.new') }}">Nouveauté</a></li>
-        <li><a href="{{ route('user.clothes') }}">Vêtements</a></li>
-        <li><a href="{{ route('user.shoes') }}">Chaussures</a></li>
-        <li><a href="{{ route('user.accessory') }}">Accessoires</a></li>
+        <li><a href="{{ route('useraccueil.new') }}">Nouveauté</a></li>
+        <li><a href="{{ route('useraccueil.clothes') }}">Vêtements</a></li>
+        <li><a href="{{ route('useraccueil.shoes') }}">Chaussures</a></li>
+        <li><a href="{{ route('useraccueil.accessory') }}">Accessoires</a></li>
       </ul>
     </div>
   </nav>

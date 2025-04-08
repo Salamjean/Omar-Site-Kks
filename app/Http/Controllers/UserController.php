@@ -180,5 +180,21 @@ class UserController extends Controller
         return view('user.pages.accessory',compact('accessorys','articleCount'));
     }
 
+    public function search(Request $request)
+{
+    $user = Auth::user();
+    $query = $request->input('query');
+    $articleCount = Commande::where('user_id', $user->id)
+    ->where('status', '!=', 'annulée')
+    ->count();
+    
+    // Recherche dans tous les produits
+    $articles = Article::where('name', 'like', "%$query%")
+                       ->orWhere('categorie', 'like', "%$query%") 
+                       ->orWhere('description', 'like', "%$query%")
+                       ->get();
+    
+    return view('user.search_results', compact('articles', 'query','articleCount'));
+}
     
 }

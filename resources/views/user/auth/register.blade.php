@@ -1,6 +1,3 @@
-@extends('pages.layouts.templates')
-@section('content')
-
 <!DOCTYPE html>
 <html>
 	<head>
@@ -20,6 +17,9 @@
 		<div class="wrapper" style="background-image: url('{{ asset('assets/images/mode.avif') }}');">
 			<div class="inner">
 				<div class="image-holder">
+					<div class="button-container">
+						<a href="{{ route('user.accueil') }}" class="home-button">Accueil</a>
+					</div>
 					<img src="{{ asset('assets/images/registration-form-1.jpg') }}" alt="">
 				</div>
 				<form method="POST" action="{{ route('user.handleRegister') }}">
@@ -60,17 +60,16 @@
                         @enderror
 						<i class="zmdi zmdi-lock"></i>
 					</div>
-                    <button type="submit" class="btn btn-primary btn-block">Se connecter
+                    <button type="submit" class="btn btn-primary btn-block">S'inscrire
                         <i class="zmdi zmdi-arrow-right"></i>
                     </button>
                     <div style="margin-top: 20px; text-align: center;">
-                        Pas encore de compte? <a href="{{ route('login') }}">Se connecter</a>
+						Vous avez déjà un compte? <a href="{{ route('login') }}">Se connecter</a>
                     </div>
 
 				</form>
 			</div>
 		</div>
 		
-	</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+	</body>
 </html>
-@endsection
