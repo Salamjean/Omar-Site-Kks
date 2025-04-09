@@ -3,14 +3,12 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\BackgroundImageController;
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
-use App\Models\BackgroundImage;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [UserController::class, 'acceuil'])->name('user.accueil');
@@ -46,8 +44,8 @@ Route::prefix('shopping')->group(function(){
 
 
 Route::middleware('admin')->prefix('admin')->group(function () {
-    Route::get('/admin/dashboard',[AdminController::class,'dashboard'])->name('admin.dashboard');
-    Route::get('/admin/logout',[AdminController::class,'logout'])->name('admin.logout');
+    Route::get('/dashboard',[AdminController::class,'dashboard'])->name('admin.dashboard');
+    Route::get('/logout',[AdminController::class,'logout'])->name('admin.logout');
     Route::get('/add-article', [ArticleController::class, 'create'])->name('article.create');
     Route::post('/add-article', [ArticleController::class, 'storeArticle'])->name('article.store');
     Route::get('/all-article', [ArticleController::class, 'index'])->name('article.index');
