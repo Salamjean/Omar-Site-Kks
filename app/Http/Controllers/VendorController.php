@@ -9,7 +9,6 @@ use App\Models\ResetCodePasswordVendor;
 use App\Models\Vendor;
 use App\Notifications\SendEmailToVendorAfterRegistrationNotification;
 use Exception;
-use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
