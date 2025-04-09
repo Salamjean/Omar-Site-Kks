@@ -7,7 +7,6 @@ use App\Http\Requests\AdminRegisterRequest;
 use App\Models\Admin;
 use App\Models\Article;
 use Exception;
-use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller

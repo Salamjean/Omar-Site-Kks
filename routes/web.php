@@ -43,7 +43,7 @@ Route::prefix('shopping')->group(function(){
 });
 
 
-Route::middleware('admin')->prefix('admin')->group(function () {
+Route::middleware(\App\Http\Middleware\AdminMiddleware::class)->prefix('admin')->group(function () {
     Route::get('/dashboard',[AdminController::class,'dashboard'])->name('admin.dashboard');
     Route::get('/logout',[AdminController::class,'logout'])->name('admin.logout');
     Route::get('/add-article', [ArticleController::class, 'create'])->name('article.create');
