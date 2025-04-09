@@ -3,11 +3,11 @@
 @section('content')
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
-      <h4 class="fw-bold py-3 mb-4 text-center">Listes des accessoires publiés</h4>
+      <h4 class="fw-bold py-3 mb-4 text-center">Listes des articles des partenaires</h4>
 
       <div class="card">
         <div class="d-flex justify-content-between">
-          <h5 class="card-header">Accessoire</h5>
+          <h5 class="card-header">Partenaires articles</h5>
           <div class="pagination mt-3">
               {{ $articles->links('partials.custom_pagination') }}
           </div>
