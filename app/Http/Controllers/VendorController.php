@@ -112,7 +112,7 @@ class VendorController extends Controller
 
     public function handleLogin(Request $request) {
         $request->validate([
-            'email' => 'required|exists:admins',
+            'email' => 'required|exists:vendors',
             'password' => 'required|min:8'
         ],[
             'email.exists' => 'Cet email n\'existe pas',
