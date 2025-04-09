@@ -83,7 +83,7 @@ Route::middleware(\App\Http\Middleware\AdminMiddleware::class)->prefix('admin')-
 });
 
 //routes de vendeurs 
-Route::middleware('vendor')->prefix('vendor')->group(function(){
+Route::middleware(\App\Http\Middleware\VendorMiddleware::class)->prefix('vendor')->group(function(){
     //routes fournisseurs
     Route::get('/dashbaord/fournisseur',[FournisseurController::class,'dashboard'])->name('fournisseur.dashboard');
     Route::get('/fournisseur/create/article',[FournisseurController::class,'addArticle'])->name('fournisseur.addArticle');
