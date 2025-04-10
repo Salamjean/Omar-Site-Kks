@@ -141,4 +141,63 @@ class VendorController extends Controller
             dd($e->getMessage());
         }
     }
+
+    public function edit($id)
+    {
+        try {
+            $vendor = Vendor::findOrFail($id);
+            return view('admin.vendeur.edit', compact('vendor'));
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Une erreur est survenue');
+        }
+    }
+    
+    // Méthode pour traiter la modification
+    public function update(Request $request, $id)
+    {
+        try {
+            $vendor = Vendor::findOrFail($id);
+            
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'prenom' => 'required|string|max:255',
+                'email' => 'required|email|unique:vendors,email,'.$vendor->id,
+                'contact' => 'required|string|max:20',
+                'dateNaiss' => 'required|date',
+                'commune' => 'required|string|max:255',
+                'role' => 'required|in:Personnel,Fournisseur',
+            ]);
+    
+            $vendor->update([
+                'name' => $request->name,
+                'prenom' => $request->prenom,
+                'email' => $request->email,
+                'contact' => $request->contact,
+                'dateNaiss' => $request->dateNaiss,
+                'commune' => $request->commune,
+                'role' => $request->role,
+            ]);
+    
+            return redirect()->route('vendor.index')->with('success', 'Personnel mis à jour avec succès');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Une erreur est survenue lors de la mise à jour');
+        }
+    }
+
+    public function destroy($id)
+{
+    try {
+        $vendor = Vendor::findOrFail($id);
+        
+        // Supprimez d'abord le code de réinitialisation associé s'il existe
+        ResetCodePasswordVendor::where('email', $vendor->email)->delete();
+        
+        // Ensuite supprimez le vendeur
+        $vendor->delete();
+
+        return redirect()->route('vendor.index')->with('success', 'Personnel supprimé avec succès');
+    } catch (Exception $e) {
+        return redirect()->back()->with('error', 'Erreur lors de la suppression: '.$e->getMessage());
+    }
+}
 }

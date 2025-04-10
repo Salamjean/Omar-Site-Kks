@@ -18,5 +18,6 @@ class ArticleFournisseur extends Model
         'hover_image',
         'total',
         'reduced',
+        'status',
     ];
 }

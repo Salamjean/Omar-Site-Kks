@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('other')->nullable();
             $table->string('main_image');
             $table->string('hover_image');
-            $table->string('status')->default('Publier');
+            $table->string('status')->default('Publié');
             $table->timestamps();
         });
     }

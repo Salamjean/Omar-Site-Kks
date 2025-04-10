@@ -1,13 +1,13 @@
-@extends('fournisseur.layouts.template')
+@extends('admin.layouts.template')
 
 @section('content')
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
-      <h4 class="fw-bold py-3 mb-4 text-center">Listes des articles fournir à OMAR-CI</h4>
+      <h4 class="fw-bold py-3 mb-4 text-center">Listes des articles des partenaires</h4>
 
       <div class="card">
         <div class="d-flex justify-content-between">
-          <h5 class="card-header">Articles</h5>
+          <h5 class="card-header">Partenaires articles</h5>
           <div class="pagination mt-3">
               {{ $articles->links('partials.custom_pagination') }}
           </div>
@@ -16,9 +16,9 @@
           <table class="table table-dark">
             <thead>
               <tr style="text-align: center;">
-                <th>Nom du article</th>
+                <th>Nom du accessoire</th>
                 <th>Prix unitaire</th>
-                <th>Quantité</th>
+                <th>Nombre</th>
                 <th>Catégorie</th>
                 <th>Description</th>
                 <th>Statut</th>
@@ -26,7 +26,6 @@
                 <th>Montant réçu</th>
                 <th>Image de face</th>
                 <th>Image de dos</th>
-                <th colspan="2">Actions</th>
               </tr>
             </thead>
             <tbody class="table-border-bottom-0">
@@ -59,19 +58,10 @@
                      class="rounded"
                      onclick="showImage(this)">
             </td>
-                <td>
-                  <div class="btn-group gap-2" role="group">
-                    <a href="{{ route('article.edit', $article->id) }}">
-                      <button type="button" class="btn btn-sm btn-outline-primary">
-                      <i class="fas fa-edit me-1"></i> Modifier
-                    </button>
-                  </a>
-                  </div>
-                </td>
               </tr>
               @empty
                   <tr>
-                      <td colspan="11" style="text-align: center;">Aucun article ajouté</td>
+                      <td colspan="11" style="text-align: center;">Aucun accessoire ajouté</td>
                   </tr>
               @endforelse
             </tbody>

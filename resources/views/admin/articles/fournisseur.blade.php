@@ -21,6 +21,7 @@
                 <th>Nombre</th>
                 <th>Catégorie</th>
                 <th>Description</th>
+                <th>Statut</th>
                 <th>Montant initial</th>
                 <th>Montant réçu</th>
                 <th>Image de face</th>
@@ -37,6 +38,7 @@
                 <td>{{ $article->nombre }}</td>
                 <td>{{ $article->categorie }}</td>
                 <td>{{ $article->description }}</td>
+                <td>{{ $article->status }}</td>
                 <td>{{ $article->total }} Fcfa</td>
                 <td>{{ $article->reduced }} Fcfa</td>
                 <td>
@@ -65,19 +67,19 @@
                           <i class="fas fa-edit me-1"></i> Publier
                       </button>
                   </form>
-                  <form action="{{ route('article.destroy', $article) }}" method="POST" style="display: inline;">
+                  <form action="{{ route('article.reject', $article->id) }}" method="POST" style="display: inline;">
                     @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article?')">
-                        <i class="fas fa-trash me-1"></i> Supprimer
+                    @method('PUT')
+                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir refuser cet article?')">
+                        <i class="fas fa-times me-1"></i> Refuser
                     </button>
-                  </form>
+                </form>
                   </div>
                 </td>
               </tr>
               @empty
                   <tr>
-                      <td colspan="7" style="text-align: center;">Aucun accessoire ajouté</td>
+                      <td colspan="11" style="text-align: center;">Aucun accessoire ajouté</td>
                   </tr>
               @endforelse
             </tbody>

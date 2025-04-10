@@ -1,13 +1,13 @@
-@extends('fournisseur.layouts.template')
+@extends('admin.vendeur.layouts.template')
 
 @section('content')
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
-      <h4 class="fw-bold py-3 mb-4 text-center">Listes des articles fournir à OMAR-CI</h4>
+      <h4 class="fw-bold py-3 mb-4 text-center">Listes des articles des partenaires</h4>
 
       <div class="card">
         <div class="d-flex justify-content-between">
-          <h5 class="card-header">Articles</h5>
+          <h5 class="card-header">Partenaires articles</h5>
           <div class="pagination mt-3">
               {{ $articles->links('partials.custom_pagination') }}
           </div>
@@ -16,9 +16,9 @@
           <table class="table table-dark">
             <thead>
               <tr style="text-align: center;">
-                <th>Nom du article</th>
+                <th>Nom du accessoire</th>
                 <th>Prix unitaire</th>
-                <th>Quantité</th>
+                <th>Nombre</th>
                 <th>Catégorie</th>
                 <th>Description</th>
                 <th>Statut</th>
@@ -61,17 +61,25 @@
             </td>
                 <td>
                   <div class="btn-group gap-2" role="group">
-                    <a href="{{ route('article.edit', $article->id) }}">
-                      <button type="button" class="btn btn-sm btn-outline-primary">
-                      <i class="fas fa-edit me-1"></i> Modifier
+                    <form action="{{ route('personnel.article.publish', $article) }}" method="POST" style="display: inline;">
+                      @csrf
+                      <button type="submit" class="btn btn-sm btn-outline-primary" onclick="return confirm('Êtes-vous sûr de vouloir publier cet article?')">
+                          <i class="fas fa-edit me-1"></i> Publier
+                      </button>
+                  </form>
+                  <form action="{{ route('article.reject', $article->id) }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir refuser cet article?')">
+                        <i class="fas fa-times me-1"></i> Refuser
                     </button>
-                  </a>
+                </form>
                   </div>
                 </td>
               </tr>
               @empty
                   <tr>
-                      <td colspan="11" style="text-align: center;">Aucun article ajouté</td>
+                      <td colspan="11" style="text-align: center;">Aucun accessoire ajouté</td>
                   </tr>
               @endforelse
             </tbody>

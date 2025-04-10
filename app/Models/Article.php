@@ -9,7 +9,8 @@ class Article extends Model
     protected $fillable = 
     ['title',
      'content',
-     'image_path'
+     'image_path',
+     'status',
     ]; 
 
     public function commandes()

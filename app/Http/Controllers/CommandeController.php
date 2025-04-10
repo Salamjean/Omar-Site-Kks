@@ -198,6 +198,15 @@ public function annuler(Commande $commande, Request $request)
                          ->paginate(8);
     return view('commandes.indexAdmin', compact('commandes'));
  }
+ public function personnelallCommandes(){
+    $commandes = Commande::with('article')
+                         ->where('status', '!=', 'annulée')
+                         ->where('status', '!=', 'Livrée')
+                         ->where('status', '!=', 'Refusée')
+                         ->orderBy('created_at', 'desc')
+                         ->paginate(8);
+    return view('commandes.indexVendeur', compact('commandes'));
+ }
 
  public function validate(Commande $commande)
  {
@@ -224,8 +233,69 @@ public function annuler(Commande $commande, Request $request)
  
      return back()->with('success', 'Commande validée avec succès.');
  }
+ public function personnelvalidate(Commande $commande)
+ {
+     // Vérifier si la commande est en attente
+     if (!in_array($commande->status, ['En attente', 'En cours'])) {
+        return back()->with('error', 'Seules les commandes en attente ou en cours peuvent être validées.');
+    }
+ 
+     // Mettre à jour le statut
+     $commande->update(['status' => 'Livrée']);
+ 
+     // Enregistrer dans la table commande_effectuees
+     CommandeEffectuee::create([
+         'commande_id' => $commande->id,
+         'article_name' => $commande->article_name,
+         'categorie' => $commande->categorie,
+         'unit_price' => $commande->unit_price,
+         'quantity' => $commande->quantity,
+         'total_price' => $commande->total_price,
+         'main_image' => $commande->main_image,
+         'status' => 'Livrée',
+         'validated_at' => now(),
+     ]);
+ 
+     return back()->with('success', 'Commande validée avec succès.');
+ }
  
  public function updateStatus(Request $request, Commande $commande)
+ {
+     $validatedData = $request->validate([
+         'status' => 'required|in:En attente,En cours,Livrée,Refusée',
+     ]);
+
+     DB::transaction(function () use ($commande, $validatedData) {
+         // Si le statut passe à "Refusée", restituer le stock
+         if ($validatedData['status'] === 'Refusée') {
+             Article::where('id', $commande->article_id)
+                 ->increment('nombre', $commande->quantity);
+         }
+
+         $commande->update($validatedData);
+
+         if (in_array($validatedData['status'], ['Livrée', 'Refusée'])) {
+             CommandeEffectuee::updateOrCreate(
+                 ['commande_id' => $commande->id],
+                 [
+                     'article_id' => $commande->article_id,
+                     'article_name' => $commande->article_name,
+                     'categorie' => $commande->categorie,
+                     'unit_price' => $commande->unit_price,
+                     'quantity' => $commande->quantity,
+                     'total_price' => $commande->total_price,
+                     'main_image' => $commande->main_image,
+                     'status' => $validatedData['status'],
+                     'validated_at' => now(),
+                     'stock_restored' => $validatedData['status'] === 'Refusée',
+                 ]
+             );
+         }
+     });
+
+     return redirect()->back()->with('success', 'Statut mis à jour avec succès');
+ }
+ public function personnelupdateStatus(Request $request, Commande $commande)
  {
      $validatedData = $request->validate([
          'status' => 'required|in:En attente,En cours,Livrée,Refusée',
@@ -294,11 +364,49 @@ public function cancel(Commande $commande)
 
     return back()->with('success', 'Commande refusée et stock restitué avec succès.');
 }
+public function personnelcancel(Commande $commande)
+{
+    if (!in_array($commande->status, ['En attente', 'En cours'])) {
+        return back()->with('error', 'Seules les commandes en attente ou en cours peuvent être refusées.');
+    }
+
+    DB::transaction(function () use ($commande) {
+        // Restituer le stock
+        Article::where('id', $commande->article_id)
+            ->increment('nombre', $commande->quantity);
+
+        // Mettre à jour le statut
+        $commande->update(['status' => 'Refusée']);
+
+        // Enregistrer dans l'historique
+        CommandeEffectuee::create([
+            'commande_id' => $commande->id,
+            'article_id' => $commande->article_id,
+            'article_name' => $commande->article_name,
+            'categorie' => $commande->categorie,
+            'unit_price' => $commande->unit_price,
+            'quantity' => $commande->quantity,
+            'total_price' => $commande->total_price,
+            'main_image' => $commande->main_image,
+            'status' => 'Refusée',
+            'validated_at' => now(),
+            'stock_restored' => true,
+        ]);
+    });
+
+    return back()->with('success', 'Commande refusée et stock restitué avec succès.');
+}
 
  public function effectuee(){
     $commandes = CommandeEffectuee::where('status', '!=', 'En cours')
                 ->where('status', '!=', 'En attente')
                 ->paginate(8);
     return view('commandes.indexEffectuee', compact('commandes'));
+ }
+ public function personneleffectuee(){
+    $commandes = CommandeEffectuee::where('status', '!=', 'En cours')
+                ->where('status', '!=', 'En attente')
+                ->paginate(8);
+    return view('commandes.indexVendeurEffectuee', compact('commandes'));
  }
 }

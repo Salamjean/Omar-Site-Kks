@@ -1,9 +1,9 @@
-@extends('fournisseur.layouts.template')
+@extends('admin.vendeur.layouts.template')
 
 @section('content')
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
-      <h4 class="fw-bold py-3 mb-4 text-center">Listes des articles fournir à OMAR-CI</h4>
+      <h4 class="fw-bold py-3 mb-4 text-center">Listes des articles publiés</h4>
 
       <div class="card">
         <div class="d-flex justify-content-between">
@@ -17,13 +17,11 @@
             <thead>
               <tr style="text-align: center;">
                 <th>Nom du article</th>
-                <th>Prix unitaire</th>
+                <th>Prix</th>
                 <th>Quantité</th>
                 <th>Catégorie</th>
                 <th>Description</th>
                 <th>Statut</th>
-                <th>Montant initial</th>
-                <th>Montant réçu</th>
                 <th>Image de face</th>
                 <th>Image de dos</th>
                 <th colspan="2">Actions</th>
@@ -39,8 +37,6 @@
                 <td>{{ $article->categorie }}</td>
                 <td>{{ $article->description }}</td>
                 <td>{{ $article->status }}</td>
-                <td>{{ $article->total }} Fcfa</td>
-                <td>{{ $article->reduced }} Fcfa</td>
                 <td>
                   <img src="{{ asset('storage/' . $article->main_image) }}"
                        alt="{{ $article->name }}"
@@ -61,11 +57,16 @@
             </td>
                 <td>
                   <div class="btn-group gap-2" role="group">
-                    <a href="{{ route('article.edit', $article->id) }}">
+                    <a href="{{ route('personnel.article.edit', $article->id) }}">
                       <button type="button" class="btn btn-sm btn-outline-primary">
                       <i class="fas fa-edit me-1"></i> Modifier
                     </button>
                   </a>
+                    <a href="{{ route('personnel.article.destroy', $article->id) }}">
+                      <button type="button" class="btn btn-sm btn-outline-danger">
+                        <i class="fas fa-trash me-1"></i> Supprimer
+                      </button>
+                    </a>
                   </div>
                 </td>
               </tr>

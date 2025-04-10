@@ -43,7 +43,7 @@ id="layout-navbar"
           <div class="dropdown-divider"></div>
         </li>
         <li>
-          <a class="dropdown-item" href="#">
+          <a class="dropdown-item" href="{{ route('vendor.logout') }}">
             <i class="bx bx-power-off me-2"></i>
             <span class="align-middle">Déconnexion</span>
           </a>

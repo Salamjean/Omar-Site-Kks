@@ -72,7 +72,7 @@
         <span class="menu-header-text">Articles</span>
       </li>
       <li class="menu-item">
-        <a href="#" class="menu-link">
+        <a href="{{ route('background_images_personnel.index') }}" class="menu-link">
           <i  class=" menu-icon fa-solid fa-newspaper"></i>
           <div data-i18n="Basic">Articles en tendance</div>
         </a>
@@ -84,12 +84,12 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ route('personnel.article.create') }}" class="menu-link">
               <div data-i18n="Basic">Ajout d'un article</div>
             </a>
           </li>
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ route('personnel.article.index') }}" class="menu-link">
               <div data-i18n="Basic">Listes des articles</div>
             </a>
           </li>
@@ -102,7 +102,7 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ route('personnel.article.vetements') }}" class="menu-link">
               <div data-i18n="Basic">Listes des vêtements</div>
             </a>
           </li>
@@ -115,7 +115,7 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ route('personnel.article.chaussures') }}" class="menu-link">
               <div data-i18n="Account">Listes des chaussures</div>
             </a>
           </li>
@@ -130,7 +130,7 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ route('personnel.article.accessoires') }}" class="menu-link">
               <div data-i18n="Account">Listes des Accessoires</div>
             </a>
           </li>
@@ -138,56 +138,51 @@
           </li>
         </ul>
       </li>
-
-      <!-- Personnels -->
-      <li class="menu-header small text-uppercase"><span class="menu-header-text">Personnels</span></li>
-      <!-- Onglet personnel -->
+      <li class="menu-header small text-uppercase"><span class="menu-header-text">Partenaire</span></li>
+      <li class="menu-item">
+        <a href="{{ route('personnel.article.partanaire') }}" class="menu-link">
+          <i class="menu-icon fa-solid fa-bag-shopping"></i>
+          <div data-i18n="Basic">Partenaire article</div>
+        </a>
+      </li>
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
-          <i class="menu-icon fa-solid fa-user"></i>
-          <div data-i18n="Misc">Personnel</div>
+          <i class="menu-icon fa-solid fa-bag-shopping"></i>
+          <div data-i18n="Misc">Partenaire artcile publié/refusé</div>
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="#" class="menu-link">
-              <div data-i18n="Error">Ajout d'un personnel</div>
+            <a href="{{ route('personnel.article.publierPartenaire') }}" class="menu-link">
+              <div data-i18n="Error">Artcile publié</div>
             </a>
           </li>
           <li class="menu-item">
-            <a href="#" class="menu-link">
-              <div data-i18n="Under Maintenance">Listes des personnels</div>
+            <a href="{{ route('personnel.article.refuserPartenaire') }}" class="menu-link">
+              <div data-i18n="Under Maintenance">article refusé</div>
             </a>
           </li>
         </ul>
       </li>
-
-     
       <!-- Commandes  -->
       <li class="menu-header small text-uppercase"><span class="menu-header-text">Clients</span></li>
       <!-- Onglet commande  -->
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
-          <i class="menu-icon fa-solid fa-bag-shopping"></i>
+          <i class="menu-icon fa-solid fa-cart-shopping"></i>
           <div data-i18n="Misc">Commandes</div>
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ route('personnel.commandes.allCommandes') }}" class="menu-link">
               <div data-i18n="Error">Listes des commandes</div>
             </a>
           </li>
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ route('personnel.commandes.effectuee') }}" class="menu-link">
               <div data-i18n="Under Maintenance">Commandes effectuée</div>
             </a>
           </li>
         </ul>
-      </li>
-      <li class="menu-item">
-        <a href="#" class="menu-link">
-          <i class="menu-icon fa-solid fa-users"></i>
-          <div data-i18n="Basic">Listes des clients</div>
-        </a>
       </li>
     </ul>
   </aside>

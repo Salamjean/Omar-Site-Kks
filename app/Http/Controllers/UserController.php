@@ -127,7 +127,7 @@ class UserController extends Controller
     public function UserList(){
         $users = User::all();
         return view('user.list',compact('users'));
-    }
+    } 
 
     // Les routes pour afficher les types d'articles chez le users connecter 
     

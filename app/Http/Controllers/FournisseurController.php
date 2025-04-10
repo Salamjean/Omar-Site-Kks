@@ -10,13 +10,21 @@ use Illuminate\Http\Request;
 class FournisseurController extends Controller
 {
     public function dashboard(){
-        return view('fournisseur.dashboard');
+        $vetementsCount = ArticleFournisseur::where('categorie', 'Vêtement')->count();
+        $chaussureCount = ArticleFournisseur::where('categorie', 'Chaussure')->count();
+        $accessoireCount = ArticleFournisseur::where('categorie', 'Accessoire')->count();
+        $accessoireCountPublier = ArticleFournisseur::where('status', 'Publié')->count();
+        $accessoireCountRefuser = ArticleFournisseur::where('status', 'Refusé')->count();
+        $total = $vetementsCount + $accessoireCount + $chaussureCount;
+        return view('fournisseur.dashboard',compact('vetementsCount', 'chaussureCount',
+         'accessoireCount','total','accessoireCountPublier','accessoireCountRefuser'));
     }
 
-    public function index(){
-        $articles = ArticleFournisseur::paginate(8);
-        return view('fournisseur.articles.index',compact('articles'));
-    }
+    public function index()
+{
+    $articles = ArticleFournisseur::where('status', '!=', 'Refusé')->paginate(8);
+    return view('fournisseur.articles.index', compact('articles'));
+}
 
     public function addArticle(){
         return view('fournisseur.articles.create');
@@ -91,5 +99,24 @@ public function vetements()
     public function accessoires(){
         $articles = ArticleFournisseur::where('categorie', 'Accessoire')->paginate(8);
         return view('fournisseur.articles.accessoires',compact('articles'));
+    }
+    public function reject($id)
+    {
+        $article = ArticleFournisseur::findOrFail($id);
+        $article->status = 'Refusé';
+        $article->save(); 
+    
+        return back()->with('success', 'Statut mis à jour');
+    }
+
+    public function refuser()
+    {
+        $articles = ArticleFournisseur::where('status', 'Refusé')->paginate(8);
+        return view('fournisseur.articles.refuser', compact('articles'));
+    }
+
+    public function logout(){
+        auth()->guard('vendor')->logout();
+        return redirect()->route('vendor.login');
     }
 }

@@ -43,13 +43,14 @@ Route::prefix('shopping')->group(function(){
 });
 
 
-Route::middleware('admin')->prefix('admin')->group(function () {
+Route::middleware(\App\Http\Middleware\AdminMiddleware::class)->prefix('admin')->group(function () {
     Route::get('/dashboard',[AdminController::class,'dashboard'])->name('admin.dashboard');
     Route::get('/logout',[AdminController::class,'logout'])->name('admin.logout');
     Route::get('/add-article', [ArticleController::class, 'create'])->name('article.create');
     Route::post('/add-article', [ArticleController::class, 'storeArticle'])->name('article.store');
     Route::get('/all-article', [ArticleController::class, 'index'])->name('article.index');
-    Route::get('/delete-article/{id}', [ArticleController::class, 'destroy'])->name('article.destroy');
+    Route::get('/all/delete-article/{id}', [ArticleController::class, 'destroy'])->name('article.destroy');
+    Route::put('/articles/reject/{id}', [FournisseurController::class, 'reject'])->name('article.reject');
     Route::get('/edit-article/{id}', [ArticleController::class, 'edit'])->name('article.edit');
     Route::put('/edit-article/{id}', [ArticleController::class, 'update'])->name('article.update');
     Route::resource('background_images', BackgroundImageController::class)->except(['show', 'edit', 'update']);
@@ -60,12 +61,17 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('/accessoires',[ArticleController::class, 'accessoires'])->name('article.accessoires');
     Route::post('/article/publish/{article_fournisseur}', [ArticleController::class, 'publish'])->name('article.publish');
 
-    //toutes du partenaire
+    //routes du partenaire
     Route::get('partanaire',[ArticleController::class, 'partanaire'])->name('article.partanaire');
-    Route::delete('partenaire/delete/{article}', [ArticleController::class, 'deleteArticle'])->name('article.destroy');
+    Route::get('partanaire/publier',[ArticleController::class, 'partenairePublier'])->name('article.publierPartenaire');
+    Route::get('partanaire/refuser',[ArticleController::class, 'partanaireRefuser'])->name('article.refuserPartenaire');
+    //Route::delete('/partenaire/supprimer/{article}', [ArticleController::class, 'deleteArticle'])->name('article.destroy');
 
     //Routes utilisateurs admin
     Route::get('users-lists',[UserController::class, 'UserList'])->name('users-lists');
+    Route::get('/vendor/{id}/edit', [VendorController::class, 'edit'])->name('vendor.edit');
+    Route::put('/vendor/{id}', [VendorController::class, 'update'])->name('vendor.update');
+    Route::delete('/vendor/{id}', [VendorController::class, 'destroy'])->name('vendor.destroy');
 
     //Routes des commandes admin
     Route::get('/commandes/all-commandes', [CommandeController::class, 'allCommandes'])->name('commandes.allCommandes');
@@ -83,18 +89,46 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 });
 
 //routes de vendeurs 
-Route::middleware('vendor')->prefix('vendor')->group(function(){
+Route::middleware(\App\Http\Middleware\VendorMiddleware::class)->prefix('vendor')->group(function(){
     //routes fournisseurs
     Route::get('/dashbaord/fournisseur',[FournisseurController::class,'dashboard'])->name('fournisseur.dashboard');
-    Route::get('/partenaire/create/article',[FournisseurController::class,'addArticle'])->name('fournisseur.addArticle');
-    Route::post('/partenaire/create/article',[FournisseurController::class,'storeArticle'])->name('fournisseur.storeArticle');
-    Route::get('/partenaire/index/article',[FournisseurController::class,'index'])->name('fournisseur.index');
+    Route::get('/logout/fournisseur',[FournisseurController::class,'logout'])->name('vendor.logout');
+    Route::get('/fournisseur/create/article',[FournisseurController::class,'addArticle'])->name('fournisseur.addArticle');
+    Route::post('/fournisseur/create/article',[FournisseurController::class,'storeArticle'])->name('fournisseur.storeArticle');
+    Route::get('/fournisseur/index/article',[FournisseurController::class,'index'])->name('fournisseur.index');
+    Route::get('/fournisseur/refuser/article',[FournisseurController::class,'refuser'])->name('fournisseur.refuser');
     Route::get('/vêtements',[FournisseurController::class, 'vetements'])->name('fournisseur.vetements');
     Route::get('/chaussures',[FournisseurController::class, 'chaussures'])->name('fournisseur.chaussures');
     Route::get('/accessoires',[FournisseurController::class, 'accessoires'])->name('fournisseur.accessoires');
 
     //routes personnels
+    Route::resource('background_images_personnel', PersonnelController::class)->except(['show', 'edit', 'update']);
     Route::get('/dashbaord/personnel',[PersonnelController::class,'dashboard'])->name('vendor.dashboard');
+    Route::get('/add-article', [PersonnelController::class, 'create'])->name('personnel.article.create');
+    Route::post('/add-article', [PersonnelController::class, 'storeArticle'])->name('personnel.article.store');
+    Route::get('/all-article', [PersonnelController::class, 'indexArricle'])->name('personnel.article.index');
+    Route::get('/all/delete-article/{id}', [PersonnelController::class, 'destroyArricle'])->name('personnel.article.destroy');
+    Route::get('/edit-article/{id}', [PersonnelController::class, 'editArricle'])->name('personnel.article.edit');
+    Route::put('/edit-article/{id}', [PersonnelController::class, 'updateArricle'])->name('personnel.article.update');
+
+    //Routes articles vendeur
+    Route::get('all/vêtements',[PersonnelController::class, 'vetements'])->name('personnel.article.vetements');
+    Route::get('all/chaussures',[PersonnelController::class, 'chaussures'])->name('personnel.article.chaussures');
+    Route::get('all/accessoires',[PersonnelController::class, 'accessoires'])->name('personnel.article.accessoires');
+    Route::post('/article/publish/{article_fournisseur}', [PersonnelController::class, 'publish'])->name('personnel.article.publish');
+
+    //Routes partenaires vendeurs 
+    Route::get('partanaire',[PersonnelController::class, 'partanaire'])->name('personnel.article.partanaire');
+    Route::get('partanaire/publier',[PersonnelController::class, 'partenairePublier'])->name('personnel.article.publierPartenaire');
+    Route::get('partanaire/refuser',[PersonnelController::class, 'partanaireRefuser'])->name('personnel.article.refuserPartenaire');
+
+     //Routes des commandes vendeurs
+     Route::get('/commandes/all-commandes', [CommandeController::class, 'personnelallCommandes'])->name('personnel.commandes.allCommandes');
+     Route::get('/commandes/all-commandes-effectuee', [CommandeController::class, 'personneleffectuee'])->name('personnel.commandes.effectuee');
+     Route::get('/commandes/{commande}/validate', [CommandeController::class, 'personnelvalidate'])->name('personnel.commandes.validate');
+     Route::get('/commandes/{commande}/cancel', [CommandeController::class, 'personnelcancel'])->name('personnel.commandes.cancel');
+     Route::put('/commandes/{commande}/update-status', [CommandeController::class, 'personnelupdateStatus'])->name('personnel.commandes.updateStatus');
+     Route::put('/commandes/{commande}/update-payment-status', [CommandeController::class, 'updatePaymentStatus'])->name('personnel.commandes.updatePaymentStatus');
 });
 
 Route::get('/vendor/login',[VendorController::class,'login'])->name('vendor.login');

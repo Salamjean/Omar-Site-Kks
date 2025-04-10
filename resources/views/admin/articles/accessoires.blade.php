@@ -21,6 +21,7 @@
                 <th>Nombre</th>
                 <th>Catégorie</th>
                 <th>Description</th>
+                <th>Statut</th>
                 <th>Image de face</th>
                 <th>Image de dos</th>
                 <th colspan="2">Actions</th>
@@ -35,6 +36,7 @@
                 <td>{{ $article->nombre }}</td>
                 <td>{{ $article->categorie }}</td>
                 <td>{{ $article->description }}</td>
+                <td>{{ $article->status }}</td>
                 <td>
                   <img src="{{ asset('storage/' . $article->main_image) }}"
                        alt="{{ $article->name }}"
@@ -70,7 +72,7 @@
               </tr>
               @empty
                   <tr>
-                      <td colspan="7" style="text-align: center;">Aucun accessoire ajouté</td>
+                      <td colspan="9" style="text-align: center;">Aucun accessoire ajouté</td>
                   </tr>
               @endforelse
             </tbody>

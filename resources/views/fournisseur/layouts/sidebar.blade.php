@@ -72,19 +72,25 @@
         <span class="menu-header-text">Articles</span>
       </li>
       <li class="menu-item">
+        <a href="{{ route('fournisseur.addArticle') }}" class="menu-link">
+          <i class="menu-icon fa-solid fa-bag-shopping"></i>
+          <div data-i18n="Basic">Ajouter un article</div>
+        </a>
+      </li>
+      <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon fa-solid fa-bars-progress"></i>
           <div data-i18n="Authentications">Articles</div>
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="{{ route('fournisseur.addArticle') }}" class="menu-link">
-              <div data-i18n="Basic">Ajout d'un article</div>
+            <a href="{{ route('fournisseur.index') }}" class="menu-link">
+              <div data-i18n="Basic">Listes des articles</div>
             </a>
           </li>
           <li class="menu-item">
-            <a href="{{ route('fournisseur.index') }}" class="menu-link">
-              <div data-i18n="Basic">Listes des articles</div>
+            <a href="{{ route('fournisseur.refuser') }}" class="menu-link">
+              <div data-i18n="Basic">Artciles refusés</div>
             </a>
           </li>
         </ul>

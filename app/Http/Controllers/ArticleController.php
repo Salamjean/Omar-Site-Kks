@@ -165,24 +165,9 @@ class ArticleController extends Controller
     }
 
     public function partanaire(){
-        $articles = ArticleFournisseur::paginate(8);
+        $articles = ArticleFournisseur::where('status', 'Envoyé')->paginate(8);
         return view('admin.articles.fournisseur',compact('articles'));
     }
-
-    public function deleteArticle(ArticleFournisseur $article)
-{
-    // Supprimez les images du stockage si nécessaire
-    Storage::delete([
-        'public/' . $article->main_image,
-        'public/' . $article->hover_image
-    ]);
-    
-    $article->delete();
-    
-    return redirect()->route('article.partanaire')
-        ->with('success', 'Article supprimé avec succès');
-}
-
 public function publish(ArticleFournisseur $article_fournisseur)
 {
     try {
@@ -199,6 +184,10 @@ public function publish(ArticleFournisseur $article_fournisseur)
         $article->hover_image = $article_fournisseur->hover_image;
         $article->save();
 
+        // Mettre à jour le statut dans article_fournisseurs
+        $article_fournisseur->status = 'Publié';
+        $article_fournisseur->save();
+
         // Supprimer l'article de la table article_fournisseurs (optionnel)
         // $article_fournisseur->delete();
 
@@ -206,5 +195,15 @@ public function publish(ArticleFournisseur $article_fournisseur)
     } catch (Exception $e) {
         return back()->withErrors(['error' => 'Une erreur est survenue lors de la publication de l\'article.']);
     }
+}
+
+public function partenairePublier(){
+    $articles = ArticleFournisseur::where('status', 'Publié')->paginate(8);
+    return view('admin.articles.partenairePublier', compact('articles'));
+}
+
+public function partanaireRefuser(){
+    $articles = ArticleFournisseur::where('status', 'Refusé')->paginate(8);
+    return view('admin.articles.partenaireRefuser', compact('articles'));
 }
 }

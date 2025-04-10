@@ -163,9 +163,28 @@
       <li class="menu-item">
         <a href="{{ route('article.partanaire') }}" class="menu-link">
           <i class="menu-icon fa-solid fa-bag-shopping"></i>
-          <div data-i18n="Basic">Partenaire Article</div>
+          <div data-i18n="Basic">Partenaire article</div>
         </a>
       </li>
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon fa-solid fa-bag-shopping"></i>
+          <div data-i18n="Misc">Partenaire artcile publié/refusé</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item">
+            <a href="{{ route('article.publierPartenaire') }}" class="menu-link">
+              <div data-i18n="Error">Artcile publié</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="{{ route('article.refuserPartenaire') }}" class="menu-link">
+              <div data-i18n="Under Maintenance">article refusé</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      
 
      
       <!-- Commandes  -->
@@ -173,7 +192,7 @@
       <!-- Onglet commande  -->
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
-          <i class="menu-icon fa-solid fa-bag-shopping"></i>
+          <i class="menu-icon fa-solid fa-cart-shopping"></i>
           <div data-i18n="Misc">Commandes</div>
         </a>
         <ul class="menu-sub">

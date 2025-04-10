@@ -37,16 +37,19 @@
                 <td>{{ $vendor->role }}</td>
                 <td>
                   <div class="btn-group gap-2" role="group">
-                    <a href="#">
+                    <a href="{{ route('vendor.edit',$vendor->id) }}">
                       <button type="button" class="btn btn-sm btn-outline-primary">
                       <i class="fas fa-edit me-1"></i> Modifier
                     </button>
                   </a>
-                    <a href="#">
-                      <button type="button" class="btn btn-sm btn-outline-danger">
-                        <i class="fas fa-trash me-1"></i> Supprimer
-                      </button>
-                    </a>
+                  <form action="{{ route('vendor.destroy', $vendor->id) }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-danger" 
+                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce personnel?')">
+                        <i class="fas fa-trash"></i>Supprimer
+                    </button>
+                </form>
                   </div>
                 </td>
               </tr>

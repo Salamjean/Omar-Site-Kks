@@ -1,4 +1,4 @@
-@extends('admin.layouts.template')
+@extends('admin.vendeur.layouts.template')
 @section('content')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -53,12 +53,12 @@
                
                 <td>
                   <div class="btn-group gap-2" role="group">
-                    <a href="{{ route('commandes.validate', $commande->id) }}">
+                    <a href="{{ route('personnel.commandes.validate', $commande->id) }}">
                         <button type="button" class="btn btn-sm btn-outline-primary">
                           <i class="fas fa-square-check"></i> Valider
                         </button>
                       </a>
-                      <a href="{{ route('commandes.cancel', $commande->id) }}">
+                      <a href="{{ route('personnel.commandes.cancel', $commande->id) }}">
                         <button type="button" class="btn btn-sm btn-outline-danger">
                             <i class="fas fa-trash me-1"></i> Réfuser
                         </button>
@@ -133,7 +133,7 @@
 
     function showStatusModal(commandeId, currentStatus) {
     const form = document.getElementById('updateStatusForm');
-    form.action = "{{ route('commandes.updateStatus', ':id') }}".replace(':id', commandeId);
+    form.action = "{{ route('personnel.commandes.updateStatus', ':id') }}".replace(':id', commandeId);
     
     const statusSelect = document.getElementById('status');
     // Sélectionner la première option par défaut
