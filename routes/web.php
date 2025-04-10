@@ -43,7 +43,7 @@ Route::prefix('shopping')->group(function(){
 });
 
 
-Route::middleware(\App\Http\Middleware\AdminMiddleware::class)->prefix('admin')->group(function () {
+Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('/dashboard',[AdminController::class,'dashboard'])->name('admin.dashboard');
     Route::get('/logout',[AdminController::class,'logout'])->name('admin.logout');
     Route::get('/add-article', [ArticleController::class, 'create'])->name('article.create');
@@ -58,7 +58,7 @@ Route::middleware(\App\Http\Middleware\AdminMiddleware::class)->prefix('admin')-
     Route::get('/vêtements',[ArticleController::class, 'vetements'])->name('article.vetements');
     Route::get('/chaussures',[ArticleController::class, 'chaussures'])->name('article.chaussures');
     Route::get('/accessoires',[ArticleController::class, 'accessoires'])->name('article.accessoires');
-    Route::post('partenaire/publish/{article}', [ArticleController::class, 'publishArticle'])->name('article.publish');
+    Route::post('/article/publish/{article_fournisseur}', [ArticleController::class, 'publish'])->name('article.publish');
 
     //toutes du partenaire
     Route::get('partanaire',[ArticleController::class, 'partanaire'])->name('article.partanaire');
@@ -83,12 +83,12 @@ Route::middleware(\App\Http\Middleware\AdminMiddleware::class)->prefix('admin')-
 });
 
 //routes de vendeurs 
-Route::middleware(\App\Http\Middleware\VendorMiddleware::class)->prefix('vendor')->group(function(){
+Route::middleware('vendor')->prefix('vendor')->group(function(){
     //routes fournisseurs
     Route::get('/dashbaord/fournisseur',[FournisseurController::class,'dashboard'])->name('fournisseur.dashboard');
-    Route::get('/fournisseur/create/article',[FournisseurController::class,'addArticle'])->name('fournisseur.addArticle');
-    Route::post('/fournisseur/create/article',[FournisseurController::class,'storeArticle'])->name('fournisseur.storeArticle');
-    Route::get('/fournisseur/index/article',[FournisseurController::class,'index'])->name('fournisseur.index');
+    Route::get('/partenaire/create/article',[FournisseurController::class,'addArticle'])->name('fournisseur.addArticle');
+    Route::post('/partenaire/create/article',[FournisseurController::class,'storeArticle'])->name('fournisseur.storeArticle');
+    Route::get('/partenaire/index/article',[FournisseurController::class,'index'])->name('fournisseur.index');
     Route::get('/vêtements',[FournisseurController::class, 'vetements'])->name('fournisseur.vetements');
     Route::get('/chaussures',[FournisseurController::class, 'chaussures'])->name('fournisseur.chaussures');
     Route::get('/accessoires',[FournisseurController::class, 'accessoires'])->name('fournisseur.accessoires');

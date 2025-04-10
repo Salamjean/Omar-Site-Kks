@@ -183,28 +183,28 @@ class ArticleController extends Controller
         ->with('success', 'Article supprimé avec succès');
 }
 
-public function publishArticle(ArticleFournisseur $article)
+public function publish(ArticleFournisseur $article_fournisseur)
 {
     try {
-        // Créer un nouvel article dans la table articles avec les données de l'article fournisseur
-        Article::create([
-            'name' => $article->name,
-            'price' => $article->price,
-            'description' => $article->description,
-            'nombre' => $article->nombre,
-            'categorie' => $article->categorie,
-            'typeAccessoire' => $article->typeAccessoire,
-            'other' => $article->other,
-            'main_image' => $article->main_image,
-            'hover_image' => $article->hover_image,
-        ]);
+        // Créer un nouvel article dans la table articles
+        $article = new Article();
+        $article->name = $article_fournisseur->name;
+        $article->price = $article_fournisseur->price;
+        $article->nombre = $article_fournisseur->nombre;
+        $article->categorie = $article_fournisseur->categorie;
+        $article->typeAccessoire = $article_fournisseur->typeAccessoire;
+        $article->other = $article_fournisseur->other;
+        $article->description = $article_fournisseur->description;
+        $article->main_image = $article_fournisseur->main_image;
+        $article->hover_image = $article_fournisseur->hover_image;
+        $article->save();
 
-        // Optionnel: Supprimer l'article de la table article_fournisseurs après publication
-        // $article->delete();
+        // Supprimer l'article de la table article_fournisseurs (optionnel)
+        // $article_fournisseur->delete();
 
         return redirect()->back()->with('success', 'Article publié avec succès!');
-    } catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Erreur lors de la publication de l\'article: ' . $e->getMessage());
+    } catch (Exception $e) {
+        return back()->withErrors(['error' => 'Une erreur est survenue lors de la publication de l\'article.']);
     }
 }
 }

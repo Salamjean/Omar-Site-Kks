@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('hover_image');
             $table->string('total');
             $table->string('reduced');
+            $table->string('status')->default('Envoyé');
             $table->timestamps();
         });
     }
