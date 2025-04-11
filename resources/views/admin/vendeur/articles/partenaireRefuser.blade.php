@@ -16,6 +16,7 @@
           <table class="table table-dark">
             <thead>
               <tr style="text-align: center;">
+                <th>Nom du partenaire</th>
                 <th>Nom du accessoire</th>
                 <th>Prix unitaire</th>
                 <th>Nombre</th>
@@ -32,6 +33,7 @@
               @forelse ($articles as $article)
               <tr style="text-align: center;">
                
+                <td>{{ $article->vendor->name }}</td>
                 <td>{{ $article->name }}</td>
                 <td>{{ number_format($article->price) }} Fcfa</td>
                 <td>{{ $article->nombre }}</td>

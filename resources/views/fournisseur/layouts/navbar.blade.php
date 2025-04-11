@@ -31,7 +31,7 @@ id="layout-navbar"
           <a class="dropdown-item" href="#">
             <div class="d-flex">
               <div class="flex-grow-1">
-                <span class="fw-semibold d-block text-center">{{ Auth::guard('vendor')->user()->name }}</span>
+                <span class="fw-semibold d-block text-center">{{ Auth::guard('vendor')->user()->name }} {{ Auth::guard('vendor')->user()->prenom }}</span>
               </div>
             </div>
           </a>

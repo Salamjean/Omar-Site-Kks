@@ -8,14 +8,23 @@ use App\Models\ArticleFournisseur;
 use App\Models\BackgroundImage;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PersonnelController extends Controller
 {
     public function dashboard(){
-        $vetementsCount = Article::where('categorie', 'Vêtement')->count();
-        $chaussureCount = Article::where('categorie', 'Chaussure')->count();
-        $accessoireCount = Article::where('categorie', 'Accessoire')->count();
+         // Récupère le vendeur connecté
+         $vendor = Auth::guard('vendor')->user();
+        
+         // Vérifie si le vendeur est connecté (sécurité)
+         if (!$vendor) {
+             return redirect()->route('vendor.login')->with('error', 'Veuillez vous connecter');
+         }
+
+        $vetementsCount = Article::where('vendor_id', $vendor->id)->where('categorie', 'Vêtement')->count();
+        $chaussureCount = Article::where('vendor_id', $vendor->id)->where('categorie', 'Chaussure')->count();
+        $accessoireCount = Article::where('vendor_id', $vendor->id)->where('categorie', 'Accessoire')->count();
         $total = $vetementsCount + $accessoireCount + $chaussureCount;
         return view('admin.vendeur.dashboard',compact('vetementsCount', 'chaussureCount', 'accessoireCount','total'));
     }
@@ -55,7 +64,8 @@ class PersonnelController extends Controller
     }
     public function indexArricle()
     {
-        $articles = Article::paginate(8);
+        $vendor = Auth::guard('vendor')->user();
+        $articles = Article::where('vendor_id', $vendor->id)->paginate(8);
         return view('admin.vendeur.articles.index', compact('articles'));
     }
 
@@ -93,6 +103,12 @@ public function storeArticle(Request $request)
         ]);
     
         try {
+                // Récupération du vendeur connecté
+            $vendor = Auth::guard('vendor')->user();
+            
+            if (!$vendor) {
+                return back()->withErrors(['error' => 'Vendeur non authentifié']);
+            }
             // Enregistrement des images dans le dossier public/images
             $mainImagePath = $request->file('main-image')->store('images', 'public');
             $hoverImagePath = $request->file('hover-image')->store('images', 'public');
@@ -108,6 +124,7 @@ public function storeArticle(Request $request)
             $article->description = $request->input('description');
             $article->main_image = $mainImagePath; // On enregistre le chemin relatif
             $article->hover_image = $hoverImagePath; // On enregistre le chemin relatif
+            $article->vendor_id = $vendor->id; // ⭐ Attribution de l'ID du vendeur
             $article->save();
     
             return redirect()->route('personnel.article.index')->with('success', 'Article ajouté avec succès!');
@@ -182,18 +199,22 @@ public function storeArticle(Request $request)
 
         public function vetements()
         {
+             // Récupère le vendeur connecté
+            $vendor = Auth::guard('vendor')->user();
             // Récupérer les articles de catégorie "Vêtement"
-            $articles = Article::where('categorie', 'Vêtement')->paginate(8);
+            $articles = Article::where('vendor_id', $vendor->id)->where('categorie', 'Vêtement')->paginate(8);
             return view('admin.vendeur.articles.vetements', compact('articles'));
         }
     
         public function chaussures(){
-            $articles = Article::where('categorie', 'Chaussure')->paginate(8);
+            $vendor = Auth::guard('vendor')->user();
+            $articles = Article::where('vendor_id', $vendor->id)->where('categorie', 'Chaussure')->paginate(8);
             return view('admin.vendeur.articles.chaussures',compact('articles'));
         }
     
         public function accessoires(){
-            $articles = Article::where('categorie', 'Accessoire')->paginate(8);
+            $vendor = Auth::guard('vendor')->user();
+            $articles = Article::where('vendor_id', $vendor->id)->where('categorie', 'Accessoire')->paginate(8);
             return view('admin.vendeur.articles.accessoires',compact('articles'));
         }
 

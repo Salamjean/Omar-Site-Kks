@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('total');
             $table->string('reduced');
             $table->string('status')->default('Envoyé');
+            $table->foreignId('vendor_id')->constrained('vendors')->onDelete('cascade');
             $table->timestamps();
         });
     }

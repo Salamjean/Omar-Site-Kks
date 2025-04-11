@@ -26,6 +26,7 @@ Route::middleware('auth')->prefix('shopping')->group(function(){
     Route::get('/commandes/all-articles', [CommandeController::class, 'index'])->name('commandes.index');
     Route::post('/commandes/{commande}/update-quantity', [CommandeController::class, 'updateQuantity'])->name('commandes.updateQuantity');
     Route::post('/commandes/annuler/{commande}', [CommandeController::class, 'annuler'])->name('commandes.annuler');
+    Route::post('/commandes/{id}/store-payment', [CommandeController::class, 'storePayment'])->name('commandes.storePayment');
 });
 
 Route::prefix('accueil')->name('user')->group(function(){

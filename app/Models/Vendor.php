@@ -19,4 +19,13 @@ class Vendor extends Authenticatable
         'role',
         'profile_pictures',
     ];
+
+    public function articleFournisseurs()
+    {
+        return $this->hasMany(ArticleFournisseur::class);
+    }
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
 }

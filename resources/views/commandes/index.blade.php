@@ -24,7 +24,7 @@
                 <th>Quantité commandé</th>
                 <th>Total à payer</th>
                 <th>Statut</th>
-                <th>Date commande</th>
+                <th>temps commande</th>
                 <th colspan="2">Actions</th>
               </tr>
             </thead>
@@ -50,29 +50,35 @@
                     <span class="minutes">0</span> min
                 </td>
                 <td>
-                  <div class="btn-group" style="gap: 10px" role="group">
-                    <button type="button" class="btn btn-sm btn-outline-primary btn-modifier" 
-                            data-commande-id="{{ $commande->id }}"
-                            data-current-quantity="{{ $commande->quantity }}"
-                            data-unit-price="{{ $commande->unit_price }}">
-                      <i class="fas fa-edit me-1"></i> Modifier
-                    </button>
-                    <button type="button" class="btn btn-sm btn-success btn-payer" 
-                            data-commande-id="{{ $commande->id }}"
-                            data-amount="{{ $commande->total_price }}"
-                            data-article-name="{{ $commande->article_name }}"
-                            data-user-name="{{ Auth::user()->name }}"
-                            data-user-email="{{ Auth::user()->email }}"
-                            data-user-phone="{{ Auth::user()->phone ?? '' }}">
-                      <i class="fas fa-credit-card me-1"></i> Payer
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-danger btn-annuler" 
-                            data-commande-id="{{ $commande->id }}"
-                            data-quantity="{{ $commande->quantity }}"
-                            data-article-id="{{ $commande->article_id }}">
-                        <i class="fas fa-trash me-1"></i> Annuler
-                    </button>
-                  </div>
+                    <div class="btn-group" style="gap: 10px" role="group">
+                        @if($commande->status === 'En attente')
+                            <button type="button" class="btn btn-sm btn-outline-primary btn-modifier" 
+                                    data-commande-id="{{ $commande->id }}"
+                                    data-current-quantity="{{ $commande->quantity }}"
+                                    data-unit-price="{{ $commande->unit_price }}">
+                                <i class="fas fa-edit me-1"></i> Modifier
+                            </button>
+                            <button type="button" class="btn btn-sm btn-success btn-payer" 
+                                    data-commande-id="{{ $commande->id }}"
+                                    data-amount="{{ $commande->total_price }}"
+                                    data-article-name="{{ $commande->article_name }}"
+                                    data-user-name="{{ Auth::user()->name }}"
+                                    data-user-email="{{ Auth::user()->email }}"
+                                    data-user-phone="{{ Auth::user()->phone ?? '' }}">
+                                <i class="fas fa-credit-card me-1"></i> Payer
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-danger btn-annuler" 
+                                    data-commande-id="{{ $commande->id }}"
+                                    data-quantity="{{ $commande->quantity }}"
+                                    data-article-id="{{ $commande->article_id }}">
+                                <i class="fas fa-trash me-1"></i> Annuler
+                            </button>
+                        @else
+                            <span class="badge bg-{{ $commande->status === 'Payé' ? 'success' : 'secondary' }}">
+                                {{ $commande->status }}
+                            </span>
+                        @endif
+                    </div>
                 </td>
               </tr>
               @empty
@@ -105,7 +111,7 @@
 <!-- Chargement des scripts -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.cinetpay.com/seamless/main.js"></script>
-<script src="{{ asset('assets/cinetPay/cinetpay.js') }}"></script>
+{{-- <script src="{{ asset('assets/cinetPay/cinetpay.js') }}"></script> --}}
 
 <script>
     function showImage(imageElement) {
@@ -317,5 +323,158 @@
         // Mettre à jour toutes les minutes (60000 ms)
         setInterval(updateElapsedTimes, 60000);
     });
+    </script>
+
+    <script>
+        // Initialisation des boutons de paiement
+    document.addEventListener('DOMContentLoaded', function () {
+        setupCinetPayButtons();
+    });
+
+    function setupCinetPayButtons() {
+        document.querySelectorAll('.btn-payer').forEach(button => {
+            button.addEventListener('click', function () {
+                const commandeId = this.getAttribute('data-commande-id');
+                const amount = parseFloat(this.getAttribute('data-amount'));
+                const articleName = this.getAttribute('data-article-name');
+                const customerData = {
+                    name: this.getAttribute('data-user-name'),
+                    email: this.getAttribute('data-user-email'),
+                    phone: this.getAttribute('data-user-phone'),
+                };
+
+                // Premier pop-up pour saisir les informations de livraison
+                Swal.fire({
+                    title: 'Informations de livraison',
+                    html: `
+                        <div>
+                            <p>Renseignez les informations de livraison pour <strong>${articleName}</strong>.</p>
+                            <input id="name_destinataire" type="text" class="swal2-input" placeholder="Nom du destinataire">
+                            <input id="contact_destinataire" type="text" class="swal2-input" placeholder="Contact">
+                            <input id="ville" type="text" class="swal2-input" placeholder="Ville">
+                            <input id="commune" type="text" class="swal2-input" placeholder="Commune">
+                            <input id="quartier" type="text" class="swal2-input" placeholder="Quartier">
+                            <input id="code_postal" type="text" class="swal2-input" placeholder="Code postal">
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Continuer au paiement',
+                    cancelButtonText: 'Annuler',
+                    preConfirm: () => {
+                        const nameDestinataire = document.getElementById('name_destinataire').value;
+                        const contactDestinataire = document.getElementById('contact_destinataire').value;
+                        const ville = document.getElementById('ville').value;
+                        const commune = document.getElementById('commune').value;
+                        const quartier = document.getElementById('quartier').value;
+                        const codePostal = document.getElementById('code_postal').value;
+
+                        if (!nameDestinataire || !contactDestinataire || !ville || !commune || !quartier || !codePostal) {
+                            Swal.showValidationMessage('Veuillez remplir tous les champs de livraison.');
+                            return false;
+                        }
+
+                        return {
+                            nameDestinataire,
+                            contactDestinataire,
+                            ville,
+                            commune,
+                            quartier,
+                            codePostal
+                        };
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const deliveryData = result.value;
+
+                        // Deuxième pop-up pour confirmer le paiement
+                        Swal.fire({
+                            title: 'Confirmer le paiement',
+                            html: `Vous êtes sur le point de payer <strong>${amount.toLocaleString()} Fcfa</strong> pour <strong>${articleName}</strong>.`,
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonText: 'Payer maintenant',
+                            cancelButtonText: 'Annuler'
+                        }).then((paymentResult) => {
+                            if (paymentResult.isConfirmed) {
+                                // Initialiser CinetPay
+                                initCinetPay(commandeId, amount, `Paiement pour ${articleName}`, customerData, deliveryData);
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    }
+
+    function initCinetPay(commandeId, amount, description, customerData, deliveryData) {
+        CinetPay.setConfig({
+            apikey: '521006956621e4e7a6a3d16.70681548',
+            site_id: '405886',
+            notify_url: 'http://mondomaine.com/notify/',
+            mode: 'PRODUCTION'
+        });
+
+        CinetPay.getCheckout({
+            transaction_id: commandeId + '_' + Math.floor(Math.random() * 100000000).toString(),
+            amount: amount,
+            currency: 'XOF',
+            channels: 'ALL',
+            description: description,
+            customer_name: customerData.name,
+            customer_email: customerData.email,
+            customer_phone_number: customerData.phone || '00000000',
+        });
+
+        CinetPay.waitResponse(function (data) {
+            if (data.status === "ACCEPTED") {
+                // Enregistrer les informations de livraison et de paiement
+                fetch(`{{ route('commandes.storePayment', ':id') }}`.replace(':id', commandeId), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    body: JSON.stringify({
+                        transaction_id: data.cpm_trans_id,
+                        amount: amount,
+                        deliveryData: deliveryData
+                    })
+                }).then(response => response.json())
+                    .then(result => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Paiement réussi',
+                            text: result.message,
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    }).catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erreur',
+                            text: 'Une erreur est survenue.',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Paiement échoué',
+                    text: 'Votre paiement a échoué. Veuillez réessayer.',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+
+        CinetPay.onError(function (data) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: 'Une erreur est survenue lors du paiement.',
+                confirmButtonText: 'OK'
+            });
+        });
+    }
     </script>
 @endsection

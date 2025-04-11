@@ -409,4 +409,23 @@ public function personnelcancel(Commande $commande)
                 ->paginate(8);
     return view('commandes.indexVendeurEffectuee', compact('commandes'));
  }
+
+ public function storePayment(Request $request, $id)
+ {
+     $commande = Commande::findOrFail($id);
+ 
+     // Mise à jour des informations de livraison
+     $commande->name_destinataire = $request->deliveryData['nameDestinataire'];
+     $commande->contact_destinataire = $request->deliveryData['contactDestinataire'];
+     $commande->ville = $request->deliveryData['ville'];
+     $commande->commune = $request->deliveryData['commune'];
+     $commande->quartier = $request->deliveryData['quartier'];
+     $commande->code_postal = $request->deliveryData['codePostal'];
+ 
+     // Mise à jour du statut de paiement
+     $commande->status = 'Payé';
+     $commande->save();
+ 
+     return response()->json(['message' => 'Paiement et informations de livraison enregistrés avec succès.']);
+ }
 }

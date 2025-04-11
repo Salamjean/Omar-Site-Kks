@@ -19,5 +19,11 @@ class ArticleFournisseur extends Model
         'total',
         'reduced',
         'status',
+        'vendor_id',
     ];
+
+    public function vendor()
+{
+    return $this->belongsTo(Vendor::class);
+}
 }

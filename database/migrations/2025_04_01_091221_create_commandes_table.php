@@ -19,9 +19,17 @@ return new class extends Migration
              $table->string('categorie');
              $table->integer('quantity');
              $table->decimal('total_price');
-             $table->string('status')->default('pending');
+             $table->string('status')->default('En attente');
              $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
              $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+             //Les informations de livraisons 
+             $table->string('name_destinataire')->nullable();
+             $table->string('contact_destinataire')->nullable();
+             $table->string('ville')->nullable();
+             $table->string('commune')->nullable();
+             $table->string('quartier')->nullable();
+             $table->string('code_postal')->nullable();
              $table->timestamps();
         });
     }
