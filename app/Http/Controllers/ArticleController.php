@@ -73,7 +73,7 @@ class ArticleController extends Controller
         
                 return redirect()->route('article.index')->with('success', 'Article ajouté avec succès!');
             } catch (Exception $e) {
-                return back()->withErrors(['error' => 'Une erreur est survenue lors de l\'ajout de l\'article.']);
+                return back()->withErrors(['error' => $e->getMessage()]);
             }
         }
 
