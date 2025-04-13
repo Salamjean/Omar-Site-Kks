@@ -40,11 +40,6 @@
             <div style="color: rgb(152, 21, 21)">{{ $message }}</div>
              @enderror
              <br>
-             <label for="">Photo de profil</label>
-             <input type="file" id="password" class="fadeIn third" name="profile_pictures">
-            @error('profile_pictures')
-            <div style="color: rgb(152, 21, 21)">{{ $message }}</div>
-             @enderror
             <input type="submit" class="fadeIn fourth" value="S'inscrire">
           </form>
         </div>
