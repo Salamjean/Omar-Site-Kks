@@ -1,6 +1,43 @@
 @extends('admin.layouts.template')
 
 @section('content')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@if(session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Succès!',
+        text: '{{ session('success') }}',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'OK'
+    });
+</script>
+@endif
+
+@if(session('error'))
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Erreur!',
+        text: '{{ session('error') }}',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'OK'
+    });
+</script>
+@endif
+
+@if($errors->any())
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Erreur de validation',
+        html: `<ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>`,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'OK'
+    });
+</script>
+@endif
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
       <h4 class="fw-bold py-3 mb-4 text-center">Listes des personnels</h4>
