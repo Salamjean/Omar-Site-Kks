@@ -24,7 +24,7 @@ class ArticleController extends Controller
             return view('admin.articles.create');
         }
 
-    public function storeArticle(Request $request)
+        public function storeArticle(Request $request)
         {
             // Validation des données
             $request->validate([
@@ -53,6 +53,12 @@ class ArticleController extends Controller
             ]);
         
             try {
+                    // Récupération du vendeur connecté
+                $vendor = Auth::guard('vendor')->user();
+                
+                if (!$vendor) {
+                    return back()->withErrors(['error' => 'Vendeur non authentifié']);
+                }
                 // Enregistrement des images dans le dossier public/images
                 $mainImagePath = $request->file('main-image')->store('images', 'public');
                 $hoverImagePath = $request->file('hover-image')->store('images', 'public');
@@ -68,12 +74,12 @@ class ArticleController extends Controller
                 $article->description = $request->input('description');
                 $article->main_image = $mainImagePath; // On enregistre le chemin relatif
                 $article->hover_image = $hoverImagePath; // On enregistre le chemin relatif
-                $article->vendor_id = '0';
+                $article->vendor_id = $vendor->id; // ⭐ Attribution de l'ID du vendeur
                 $article->save();
         
-                return redirect()->route('article.index')->with('success', 'Article ajouté avec succès!');
+                return redirect()->route('personnel.article.index')->with('success', 'Article ajouté avec succès!');
             } catch (Exception $e) {
-                return back()->withErrors(['error' => $e->getMessage()]);
+                return back()->withErrors(['error' => 'Une erreur est survenue lors de l\'ajout de l\'article.']);
             }
         }
 
