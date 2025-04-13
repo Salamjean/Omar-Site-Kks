@@ -54,7 +54,7 @@ class ArticleController extends Controller
         
             try {
                     // Récupération du vendeur connecté
-                $vendor = Auth::guard('vendor')->user();
+                $vendor = Auth::guard('admin')->user();
                 
                 if (!$vendor) {
                     return back()->withErrors(['error' => 'Vendeur non authentifié']);
