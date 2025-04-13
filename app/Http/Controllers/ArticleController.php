@@ -78,9 +78,9 @@ class ArticleController extends Controller
                 $article->vendor_id = 0;
                 $article->save();
         
-                return redirect()->route('personnel.article.index')->with('success', 'Article ajouté avec succès!');
+                return redirect()->route('admin.article.index')->with('success', 'Article ajouté avec succès!');
             } catch (Exception $e) {
-                return back()->withErrors(['error' => $e->getMessage()]);
+                return back()->withErrors(['error' => 'Une erreur est survenue lors de l\'ajout de l\'article.']);
             }
         }
     public function destroy($id)
