@@ -194,6 +194,7 @@ public function annuler(Commande $commande, Request $request)
                          ->where('status', '!=', 'annulée')
                          ->where('status', '!=', 'Livrée')
                          ->where('status', '!=', 'Refusée')
+                         ->where('status', '!=', 'En attente')
                          ->orderBy('created_at', 'desc')
                          ->paginate(8);
     return view('commandes.indexAdmin', compact('commandes'));
@@ -210,8 +211,8 @@ public function annuler(Commande $commande, Request $request)
 
  public function validate(Commande $commande)
  {
-     // Vérifier si la commande est en attente
-     if (!in_array($commande->status, ['En attente', 'En cours'])) {
+     // Vérifier si la commande est à payer
+     if (!in_array($commande->status, ['Payé', 'En cours'])) {
         return back()->with('error', 'Seules les commandes en attente ou en cours peuvent être validées.');
     }
  
@@ -235,9 +236,9 @@ public function annuler(Commande $commande, Request $request)
  }
  public function personnelvalidate(Commande $commande)
  {
-     // Vérifier si la commande est en attente
-     if (!in_array($commande->status, ['En attente', 'En cours'])) {
-        return back()->with('error', 'Seules les commandes en attente ou en cours peuvent être validées.');
+     // Vérifier si la commande est à payer
+     if (!in_array($commande->status, ['Payé', 'En cours'])) {
+        return back()->with('error', 'Seules les commandes payer peuvent être validées.');
     }
  
      // Mettre à jour le statut

@@ -1,6 +1,53 @@
 @extends('admin.layouts.template')
 
 @section('content')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@if(session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Succès!',
+        text: '{{ session('success') }}',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'OK'
+    });
+</script>
+@endif
+
+@if(session('error'))
+<script>
+    Swal.fire({
+        title: 'Suppression!',
+        html: `
+            <div style="display:flex; flex-direction:column; align-items:center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#d33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+                <p style="margin-top:15px;">{{ session('error') }}</p>
+            </div>
+        `,
+        showConfirmButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'OK'
+    });
+</script>
+@endif
+
+@if($errors->any())
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Erreur de validation',
+        html: `<ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>`,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'OK'
+    });
+</script>
+@endif
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">

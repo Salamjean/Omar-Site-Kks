@@ -1,4 +1,5 @@
 <header class="site-navbar" role="banner">
+  <link rel="stylesheet" href="{{ asset('assetsUsers/nav.css') }}">
   <div style="background-color: black; text-transform:uppercase; padding:13px;text-align:center; color:white; font-size:13px">LIVRAISON GRATUITE POUR TOUTES LES COMMANDES</div>
   <div class="site-navbar-top">
     <div class="container" style="width: 100%">

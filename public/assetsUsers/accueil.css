@@ -219,3 +219,35 @@
       padding: 0 15px;
     }
   }
+
+  /* Adaptation responsive */
+@media (max-width: 767.98px) {
+  .intro-text {
+      text-align: center !important;
+      margin-right: 300px;
+     
+  }
+  
+  .voir a {
+      padding: 8px 0px;
+      font-size: 14px;
+      width: auto; /* Permet au bouton de s'adapter à son contenu */
+      background-color: #000;
+      color: white;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .intro-text {
+      text-align: center;
+      margin-right: 300px;
+  }
+  
+  .voir a {
+      padding: 9px 0px;
+      font-size: 15px;
+      width: auto; /* Permet au bouton de s'adapter à son contenu */
+      background-color: #000;
+      color: white;
+  }
+}

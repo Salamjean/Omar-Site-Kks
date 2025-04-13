@@ -32,7 +32,7 @@ class BackgroundImageController extends Controller
             'image_path' => $imagePath,
         ]);
 
-        return redirect()->route('background_images.index')->with('success', 'Image uploaded successfully.');
+        return redirect()->route('background_images.index')->with('success', 'Article de tendance ajouté avec succès.');
     }
 
     public function destroy(BackgroundImage $backgroundImage)
@@ -40,6 +40,6 @@ class BackgroundImageController extends Controller
         Storage::disk('public')->delete($backgroundImage->image_path);
         $backgroundImage->delete();
 
-        return redirect()->route('background_images.index')->with('success', 'Image deleted successfully.');
+        return redirect()->route('background_images.index')->with('error', 'Article de tendance supprimé avec succès.');
     }
 }
