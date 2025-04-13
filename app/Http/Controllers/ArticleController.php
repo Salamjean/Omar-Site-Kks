@@ -53,13 +53,13 @@ class ArticleController extends Controller
             ]);
         
             try {
-                    // Récupération du vendeur connecté
-                $vendor = Auth::guard('admin')->user();
+                $user = Auth::guard('admin')->user();
                 
-                if (!$vendor) {
-                    return back()->withErrors(['error' => 'Vendeur non authentifié']);
+                if (!$user) {
+                    return back()->withErrors(['error' => 'Utilisateur non authentifié']);
                 }
-                // Enregistrement des images dans le dossier public/images
+        
+                // Enregistrement des images
                 $mainImagePath = $request->file('main-image')->store('images', 'public');
                 $hoverImagePath = $request->file('hover-image')->store('images', 'public');
         
@@ -72,14 +72,14 @@ class ArticleController extends Controller
                 $article->other = $request->input('other');
                 $article->typeAccessoire = $request->input('typeAccessoire');
                 $article->description = $request->input('description');
-                $article->main_image = $mainImagePath; // On enregistre le chemin relatif
-                $article->hover_image = $hoverImagePath; // On enregistre le chemin relatif
-                $article->vendor_id = 0;
+                $article->main_image = $mainImagePath;
+                $article->hover_image = $hoverImagePath;
                 $article->save();
         
-                return redirect()->route('admin.article.index')->with('success', 'Article ajouté avec succès!');
+                return redirect()->route('article.index')->with('success', 'Article ajouté avec succès!');
             } catch (Exception $e) {
-                return back()->withErrors(['error' => $e->getMessage()]);
+                Log::error('Erreur lors de l\'ajout d\'article: ' . $e->getMessage());
+                return back()->withErrors(['error' => 'Une erreur est survenue: ' . $e->getMessage()]);
             }
         }
     public function destroy($id)
