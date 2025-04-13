@@ -74,7 +74,6 @@ class ArticleController extends Controller
                 $article->description = $request->input('description');
                 $article->main_image = $mainImagePath; // On enregistre le chemin relatif
                 $article->hover_image = $hoverImagePath; // On enregistre le chemin relatif
-                $article->vendor_id = $vendor->id; // ⭐ Attribution de l'ID du vendeur
                 $article->vendor_id = 0;
                 $article->save();
         
