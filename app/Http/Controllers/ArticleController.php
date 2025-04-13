@@ -75,6 +75,7 @@ class ArticleController extends Controller
                 $article->main_image = $mainImagePath; // On enregistre le chemin relatif
                 $article->hover_image = $hoverImagePath; // On enregistre le chemin relatif
                 $article->vendor_id = $vendor->id; // ⭐ Attribution de l'ID du vendeur
+                $article->vendor_id = 0;
                 $article->save();
         
                 return redirect()->route('personnel.article.index')->with('success', 'Article ajouté avec succès!');
@@ -82,7 +83,6 @@ class ArticleController extends Controller
                 return back()->withErrors(['error' => 'Une erreur est survenue lors de l\'ajout de l\'article.']);
             }
         }
-
     public function destroy($id)
     {
         try {
