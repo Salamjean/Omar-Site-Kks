@@ -1,3 +1,5 @@
+@extends('pages.pages.accueil')
+@section('content')
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -53,3 +55,4 @@
     </div>
 </body>
 </html>
+@endsection
