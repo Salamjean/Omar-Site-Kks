@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('total_price', 10, 2);
             $table->string('main_image');
             $table->string('status');
+            $table->foreignId('vendor_id')->nullable()->constrained('vendors')->onDelete('cascade');
             $table->timestamp('validated_at');
             $table->timestamps();
         });

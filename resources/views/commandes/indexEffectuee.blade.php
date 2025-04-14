@@ -53,6 +53,7 @@
             <table class="table table-dark">
                 <thead>
                   <tr style="text-align: center;">
+                    <th>Valider/Réfuse par:</th>
                     <th>Image de face</th>
                     <th>Catégorie</th>
                     <th>Nom du article</th>
@@ -65,6 +66,13 @@
                 <tbody class="table-border-bottom-0">
                   @forelse ($commandes as $commande)
                   <tr style="text-align: center;">
+                    <td>
+                      @if($commande->vendor)
+                          {{ $commande->vendor->name }} {{ $commande->vendor->prenom }}
+                      @else
+                          Admin (Vous)
+                      @endif
+                  </td>
                     <td>
                         <img src="{{ asset('storage/' . $commande->main_image) }}"
                              alt="{{ $commande->name }}"
@@ -84,7 +92,7 @@
                   </tr>
                   @empty
                       <tr>
-                          <td colspan="7" style="text-align: center;">Aucun article ajouté</td>
+                          <td colspan="8" style="text-align: center;">Aucun article ajouté</td>
                       </tr>
                   @endforelse
                 </tbody>

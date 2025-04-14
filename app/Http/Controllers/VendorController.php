@@ -129,7 +129,7 @@ class VendorController extends Controller
                 // Vérification du rôle et redirection appropriée
                 if ($user->role === 'Personnel') {
                     return redirect()->route('vendor.dashboard');
-                } elseif ($user->role === 'Fournisseur') {
+                } elseif ($user->role === 'Partenaire') {
                     return redirect()->route('fournisseur.dashboard');
                 }
                 

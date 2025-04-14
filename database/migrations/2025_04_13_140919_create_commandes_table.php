@@ -22,6 +22,7 @@ return new class extends Migration
              $table->string('status')->default('En attente');
              $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
              $table->foreignId('user_id')->constrained()->onDelete('cascade');
+             $table->foreignId('vendor_id')->nullable()->constrained('vendors')->onDelete('cascade');
 
              //Les informations de livraisons 
              $table->string('name_destinataire')->nullable();

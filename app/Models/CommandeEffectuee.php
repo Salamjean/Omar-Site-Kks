@@ -10,6 +10,7 @@ class CommandeEffectuee extends Model
     use HasFactory;
 
     protected $fillable = [
+        'vendor_id',
         'commande_id',
         'article_name',
         'categorie',
@@ -24,5 +25,10 @@ class CommandeEffectuee extends Model
     public function commande()
     {
         return $this->belongsTo(Commande::class);
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
     }
 }

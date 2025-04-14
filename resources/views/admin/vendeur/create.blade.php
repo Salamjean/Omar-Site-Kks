@@ -79,7 +79,7 @@
                                     <select class="form-select" id="role" name="role" >
                                         <option value="">Sélectionnez son rôle</option>
                                         <option value="Personnel">Personnel</option>
-                                        <option value="Fournisseur">Fournisseur</option>
+                                        <option value="Partenaire">Partenaire</option>
                                     </select>
                                     @error('role')
                                     <div class="text-danger">{{ $message }}</div>

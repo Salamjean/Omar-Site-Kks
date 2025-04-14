@@ -11,9 +11,7 @@
     <div class="wrapper fadeInDown">
         <div id="formContent">
           <!-- Tabs Titles -->
-          <h2 class="active"> Se connecter </h2>
-          <a href="{{ route('admin.register') }}"><h2 class="inactive underlineHover">S'inscrire</h2></a>
-      
+          <h2 class="active mb-4"> Se connecter </h2>
           <!-- Icon -->
           <div class="fadeIn first">
             <img src="{{ asset('assets/images/logoOmar.png') }}" id="icon" alt="User Icon" />
@@ -33,12 +31,6 @@
             @enderror
             <input type="submit" class="fadeIn fourth" value="Se connecter">
           </form>
-      
-          <!-- Remind Passowrd -->
-          <div id="formFooter">
-            <a class="underlineHover" href="#">Mot de passe oublié ?</a>
-          </div>
-      
         </div>
       </div>
 </body>

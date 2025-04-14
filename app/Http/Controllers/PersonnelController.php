@@ -237,6 +237,7 @@ public function storeArticle(Request $request)
         $article->description = $article_fournisseur->description;
         $article->main_image = $article_fournisseur->main_image;
         $article->hover_image = $article_fournisseur->hover_image;
+        $article->vendor_id = Auth::guard('vendor')->user()->id;
         $article->save();
 
         // Mettre à jour le statut dans article_fournisseurs

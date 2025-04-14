@@ -53,6 +53,7 @@
           <table class="table table-dark">
             <thead>
               <tr style="text-align: center;">
+                <th>Publier par :</th>
                 <th>Nom du article</th>
                 <th>Prix</th>
                 <th>Quantité</th>
@@ -67,7 +68,13 @@
             <tbody class="table-border-bottom-0">
               @forelse ($articles as $article)
               <tr style="text-align: center;">
-               
+                <td>
+                  @if($article->vendor)
+                      {{ $article->vendor->name }} {{ $article->vendor->prenom }}
+                  @else
+                      Admin (Vous)
+                  @endif
+              </td>
                 <td>{{ $article->name }}</td>
                 <td>{{ number_format($article->price) }} Fcfa</td>
                 <td>{{ $article->nombre }}</td>

@@ -41,12 +41,6 @@
              @enderror
             <input type="submit" class="fadeIn fourth" value="S'inscrire">
           </form>
-      
-          <!-- Remind Passowrd -->
-          <div id="formFooter">
-            <a class="underlineHover" href="#">Mot de passe oublié ?</a>
-          </div>
-      
         </div>
       </div>
 </body>

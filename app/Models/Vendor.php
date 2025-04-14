@@ -28,4 +28,14 @@ class Vendor extends Authenticatable
     {
         return $this->hasMany(Article::class);
     }
+
+    public function commandes()
+    {
+        return $this->hasMany(Commande::class);
+    }
+
+    public function commandeEffectuee()
+    {
+        return $this->hasMany(CommandeEffectuee::class);
+    }
 }

@@ -236,13 +236,20 @@ public function annuler(Commande $commande, Request $request)
  }
  public function personnelvalidate(Commande $commande)
  {
+     // Vérifier si l'utilisateur est connecté
+     if (!Auth::guard('vendor')->check()) {
+         return back()->with('error', 'Vous devez être connecté pour valider une commande.');
+     }
+ 
      // Vérifier si la commande est à payer
      if (!in_array($commande->status, ['Payé', 'En cours'])) {
-        return back()->with('error', 'Seules les commandes payer peuvent être validées.');
-    }
- 
-     // Mettre à jour le statut
-     $commande->update(['status' => 'Livrée']);
+         return back()->with('error', 'Seules les commandes payer peuvent être validées.');
+     }
+     // Mettre à jour le statut de la commande
+     $commande->update([
+         'status' => 'Livrée',
+         'vendor_id' => Auth::guard('vendor')->user()->id, // Assigner l'ID du vendeur à la commande
+     ]);
  
      // Enregistrer dans la table commande_effectuees
      CommandeEffectuee::create([
@@ -254,6 +261,7 @@ public function annuler(Commande $commande, Request $request)
          'total_price' => $commande->total_price,
          'main_image' => $commande->main_image,
          'status' => 'Livrée',
+         'vendor_id' => Auth::guard('vendor')->user()->id, // ID du vendeur
          'validated_at' => now(),
      ]);
  
@@ -400,12 +408,16 @@ public function personnelcancel(Commande $commande)
 
  public function effectuee(){
     $commandes = CommandeEffectuee::where('status', '!=', 'En cours')
+                ->with('vendor')
                 ->where('status', '!=', 'En attente')
                 ->paginate(8);
     return view('commandes.indexEffectuee', compact('commandes'));
  }
  public function personneleffectuee(){
-    $commandes = CommandeEffectuee::where('status', '!=', 'En cours')
+    // Récupère le vendeur connecté
+    $vendor = Auth::guard('vendor')->user();
+    $commandes = CommandeEffectuee::where('vendor_id', $vendor->id)
+                ->where('status', '!=', 'En cours')
                 ->where('status', '!=', 'En attente')
                 ->paginate(8);
     return view('commandes.indexVendeurEffectuee', compact('commandes'));

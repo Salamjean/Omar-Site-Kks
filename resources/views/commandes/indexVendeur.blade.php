@@ -2,6 +2,7 @@
 @section('content')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 @if(session('success'))
 <script>
     Swal.fire({
@@ -26,7 +27,7 @@
 </script>
 @endif
 
-@if($errors->any())
+@if($errors->any()))
 <script>
     Swal.fire({
         icon: 'error',
@@ -60,7 +61,9 @@
                 <th>Quantité</th>
                 <th>Montant total</th>
                 <th>Etat</th>
+                <th>Livraison</th>
                 <th colspan="2">Actions</th>
+                
               </tr>
             </thead>
             <tbody class="table-border-bottom-0">
@@ -85,7 +88,11 @@
                         <i class="fas fa-edit me-1"></i>
                     </a>
                 </td>
-               
+                <td>
+                  <button class="btn btn-sm btn-info" onclick="showDeliveryInfo({{ json_encode($commande) }})">
+                      <i class="fas fa-truck"></i> Voir infos
+                  </button>
+              </td>
                 <td>
                   <div class="btn-group gap-2" role="group">
                     <a href="{{ route('personnel.commandes.validate', $commande->id) }}">
@@ -100,10 +107,11 @@
                     </a>
                   </div>
                 </td>
+               
               </tr>
               @empty
                   <tr>
-                      <td colspan="8" style="text-align: center;">Aucun article ajouté</td>
+                      <td colspan="10" style="text-align: center;">Aucun article ajouté</td>
                   </tr>
               @endforelse
             </tbody>
@@ -167,94 +175,126 @@
     }
 
     function showStatusModal(commandeId, currentStatus) {
-    const form = document.getElementById('updateStatusForm');
-    form.action = "{{ route('personnel.commandes.updateStatus', ':id') }}".replace(':id', commandeId);
-    
-    const statusSelect = document.getElementById('status');
-    // Sélectionner la première option par défaut
-    statusSelect.selectedIndex = 0;
-    
-    // Afficher le modal
-    const statusModal = new bootstrap.Modal(document.getElementById('statusModal'));
-    statusModal.show();
-}
+        const form = document.getElementById('updateStatusForm');
+        form.action = "{{ route('personnel.commandes.updateStatus', ':id') }}".replace(':id', commandeId);
+        
+        const statusSelect = document.getElementById('status');
+        statusSelect.value = currentStatus;
+        
+        const statusModal = new bootstrap.Modal(document.getElementById('statusModal'));
+        statusModal.show();
+    }
 
-// Gérer la soumission du formulaire avec AJAX
-document.getElementById('updateStatusForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const form = this;
-    const url = form.action;
-    const formData = new FormData(form);
-    
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            'X-HTTP-Method-Override': 'PUT',
-            'Accept': 'application/json'
-        },
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erreur réseau');
+    function showDeliveryInfo(commande) {
+        // Vérifier si des informations de livraison existent
+        if (!commande.name_destinataire && !commande.contact_destinataire && !commande.ville) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Informations de livraison',
+                text: 'Aucune information de livraison disponible pour cette commande.',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
+            return;
         }
-        return response.json();
-    })
-    .then(data => {
-        Swal.fire('Succès!', data.message || 'Statut mis à jour', 'success')
-           .then(() => window.location.reload());
-    })
-    .catch(error => {
-        Swal.fire('Erreur!', error.message || 'Une erreur est survenue', 'error');
-        console.error('Error:', error);
-    });
-});
 
-// Ajoutez ce code dans votre section script
-document.querySelectorAll('.btn-outline-primary').forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const url = this.closest('a').href;
-        
+        // Construire le HTML avec les informations de livraison
+        const deliveryInfo = `
+            <div class="text-center">
+                <p><strong>Destinataire:</strong> ${commande.name_destinataire || 'Non renseigné'}</p>
+                <p><strong>Contact:</strong> ${commande.contact_destinataire || 'Non renseigné'}</p>
+                <p><strong>Ville:</strong> ${commande.ville || 'Non renseigné'}</p>
+                <p><strong>Commune:</strong> ${commande.commune || 'Non renseigné'}</p>
+                <p><strong>Quartier:</strong> ${commande.quartier || 'Non renseigné'}</p>
+                <p><strong>Code postal:</strong> ${commande.code_postal || 'Non renseigné'}</p>
+            </div>
+        `;
+
         Swal.fire({
-            title: 'Confirmer la validation',
-            text: "Voulez-vous vraiment valider cette commande?",
-            icon: 'question',
-            showCancelButton: true,
+            icon: 'info',
+            title: 'Informations de livraison',
+            html: deliveryInfo,
             confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Oui, valider!',
-            cancelButtonText: 'Annuler'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = url;
-            }
+            confirmButtonText: 'OK'
         });
-    });
-});
+    }
 
-// Ajoutez ce code dans votre section script
-document.querySelectorAll('.btn-outline-danger').forEach(button => {
-    button.addEventListener('click', function(e) {
+    // Gérer la soumission du formulaire avec AJAX
+    document.getElementById('updateStatusForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const url = this.closest('a').href;
         
-        Swal.fire({
-            title: 'Confirmer le refus',
-            text: "Voulez-vous vraiment refuser cette commande?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Oui, refuser!',
-            cancelButtonText: 'Annuler'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = url;
+        const form = this;
+        const url = form.action;
+        const formData = new FormData(form);
+        
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'X-HTTP-Method-Override': 'PUT',
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur réseau');
             }
+            return response.json();
+        })
+        .then(data => {
+            Swal.fire('Succès!', data.message || 'Statut mis à jour', 'success')
+               .then(() => window.location.reload());
+        })
+        .catch(error => {
+            Swal.fire('Erreur!', error.message || 'Une erreur est survenue', 'error');
+            console.error('Error:', error);
         });
     });
-});
+
+    // Ajoutez ce code dans votre section script
+    document.querySelectorAll('.btn-outline-primary').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const url = this.closest('a').href;
+            
+            Swal.fire({
+                title: 'Confirmer la validation',
+                text: "Voulez-vous vraiment valider cette commande?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, valider!',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        });
+    });
+
+    // Ajoutez ce code dans votre section script
+    document.querySelectorAll('.btn-outline-danger').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const url = this.closest('a').href;
+            
+            Swal.fire({
+                title: 'Confirmer le refus',
+                text: "Voulez-vous vraiment refuser cette commande?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Oui, refuser!',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        });
+    });
 </script>

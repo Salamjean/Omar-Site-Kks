@@ -14,6 +14,7 @@ class Commande extends Model
         'main_image',
         'categorie',
         'user_id',
+        'vendor_id',
         'quantity',
         'total_price',
         'status'
@@ -27,5 +28,10 @@ class Commande extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
     }
 }
